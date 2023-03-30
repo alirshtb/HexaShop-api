@@ -1,0 +1,30 @@
+﻿using HexaShop.Application.Constracts.PersistanceContracts;
+using HexaShop.Persistance.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HexaShop.Persistance
+{
+    public static class PersistanceServiceRegisteration
+    {
+        public static IServiceCollection ConfigurePersistanceServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<HexaShopDbContext>(options =>
+            {
+                options/*.UseLazyLoadingProxies()*/.UseSqlServer(configuration.GetConnectionString("MainConnectionString"));
+            });
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            return services;
+
+        }
+    }
+}
