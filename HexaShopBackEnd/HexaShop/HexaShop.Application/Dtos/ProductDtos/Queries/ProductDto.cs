@@ -1,10 +1,5 @@
 ﻿using HexaShop.Application.Dtos.DetailDtos.Queries;
 using HexaShop.Application.Dtos.ImageSourceDtos.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HexaShop.Application.Dtos.ProductDtos.Queries
 {

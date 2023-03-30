@@ -136,7 +136,7 @@ namespace HexaShop.Persistance.Repositories
         /// <param name="includes"></param>
         /// <param name="expression"></param>
         /// <returns></returns>
-        private IQueryable<T> GetAsQueryable(List<string>? includes = null, Expression<Func<T, bool>>? expression = null)
+        protected IQueryable<T> GetAsQueryable(List<string>? includes = null, Expression<Func<T, bool>>? expression = null)
         {
             var entities = _dbContext.Set<T>().AsQueryable();
 
@@ -147,8 +147,13 @@ namespace HexaShop.Persistance.Repositories
                     entities = entities.Include(include);
                 }
             }
+            
+            if(expression != null)
+            {
+                entities = entities.Where(expression);
+            }
 
-            return entities.Where(expression);
+            return entities;
 
         }
 

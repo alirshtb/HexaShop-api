@@ -15,9 +15,15 @@ namespace HexaShop.Persistance.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Category>> GetParents()
+        /// <summary>
+        /// get parent categories as queryable.
+        /// </summary>
+        /// <param name="includes"></param>
+        /// <returns></returns>
+        public IQueryable<Category> GetParents(List<string> includes)
         {
-            var parents = _dbContext.Categories.Where(c => c.ParentCategoryId == null);
+            var parents = GetAsQueryable(includes: includes).Where(c => c.ParentCategoryId == null)
+                                                            .AsQueryable();
             return parents;
         }
 

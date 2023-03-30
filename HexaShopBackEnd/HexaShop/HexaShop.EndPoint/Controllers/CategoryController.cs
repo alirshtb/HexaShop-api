@@ -5,7 +5,6 @@ using HexaShop.Application.Features.CategoryFeatures.Requests.Commands;
 using HexaShop.Application.Features.CategoryFeatures.Requests.Queries;
 using HexaShop.Common.CommonExtenstionMethods;
 using HexaShop.EndPoint.Models.ViewModels.CategoryController;
-using HexaShop.EndPoint.Models.ViewModels.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,7 +60,7 @@ namespace HexaShop.EndPoint.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("Get/{id}")]
-        public async Task<ActionResult<GetCategoryViewModel>> Get(int id)
+        public async Task<ActionResult<CategoryDto>> Get(int id)
         {
             try
             {
@@ -72,7 +71,6 @@ namespace HexaShop.EndPoint.Controllers
 
                 var category = await _mediator.Send(getCategoryRequest);
 
-                var categoryToShow = _mapper.Map<GetCategoryViewModel>(category);
 
                 return Ok(category);
 
@@ -109,12 +107,24 @@ namespace HexaShop.EndPoint.Controllers
             }
         }
 
-
+        /// <summary>
+        /// get parent categories.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost("GetList")]
         public async Task<ActionResult<List<CategoryDto>>> GetList([FromBody] GetCategoryListRequest model)
         {
             try
             {
-                return Ok();
+
+                var request = new GetParentCategoryListQR()
+                {
+                    GetCategoryList = model
+                };
+                var result = await _mediator.Send(request);
+
+                return Ok(result);
             }
             catch (Exception ex)
             {

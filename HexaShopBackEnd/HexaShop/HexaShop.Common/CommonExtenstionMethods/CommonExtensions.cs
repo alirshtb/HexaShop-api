@@ -26,5 +26,21 @@ namespace HexaShop.Common.CommonExtenstionMethods
 
             return enumValue;
         }
+
+        /// <summary>
+        /// get paginated enumerable.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> GetPaginatedList<T>(this IEnumerable<T> source, int pageNumber, int pageSize)
+        {
+            var result = source.Skip((pageNumber - 1) * pageSize)
+                               .Take(pageSize);
+
+            return result;
+        }
     }
 }

@@ -68,7 +68,7 @@ namespace HexaShop.EndPoint.Controllers
         /// <param name="id">int id</param>
         /// <returns>productDto</returns>
         [HttpGet("Get/{id}")]
-        public async Task<ActionResult<GetProductViewModel>> Get(int id)
+        public async Task<ActionResult<ProductDto>> Get(int id)
         {
             try
             {
@@ -77,9 +77,9 @@ namespace HexaShop.EndPoint.Controllers
                     ProductId = id
                 });
 
-                var result = _mapper.Map<GetProductViewModel>(productDto);
+                //var result = _mapper.Map<GetProductViewModel>(productDto);
 
-                return Ok(result);
+                return Ok(productDto);
 
             }
             catch (Exception ex)

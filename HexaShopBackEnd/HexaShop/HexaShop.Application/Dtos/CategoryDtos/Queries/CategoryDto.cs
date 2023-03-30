@@ -12,6 +12,5 @@ namespace HexaShop.Application.Dtos.CategoryDtos.Queries
         public string Name { get; set; }
         public string Description { get; set; }
         public List<CategoryDto> Childs { get; set; }
-        public int? ParentId { get; set; }
     }
 }

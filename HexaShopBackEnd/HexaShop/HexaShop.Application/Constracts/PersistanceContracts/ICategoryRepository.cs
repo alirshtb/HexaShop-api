@@ -9,6 +9,6 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
 {
     public interface ICategoryRepository : IGenericRepository<Category>
     {
-        Task<IEnumerable<Category>> GetParents();
+        IQueryable<Category> GetParents(List<string> includes);
     }
 }
