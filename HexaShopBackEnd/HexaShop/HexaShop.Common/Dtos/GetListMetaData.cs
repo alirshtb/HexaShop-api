@@ -13,6 +13,6 @@ namespace HexaShop.Common.Dtos
         public int PageSize { get; set; }
         public int PagesCount { get; set; }
         public int RowsCount { get; set; }
-
+        public string? Search { get; set; }
     }
 }

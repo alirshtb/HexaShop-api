@@ -53,19 +53,11 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Queries
                                                            search: request.GetCategoryList.Search);
 
             var values = _mapper.Map<IEnumerable<GetParentCategoryListDto>>(paginatedList);
-            var metaData = new GetListMetaData()
-            {
-                PageNumber = paginatedList.PageNumber,
-                PageSize = paginatedList.PageSize,
-                PagesCount= paginatedList.PagesCount,
-                RowsCount= paginatedList.RowsCount,
-                TotalCount = paginatedList.TotalCount,
-            };
 
             var result = new GetListResultDto<GetParentCategoryListDto>()
             {
                 Values = values,
-                MetaData = metaData
+                MetaData = paginatedList.MetaData
             };
             return result;
         }

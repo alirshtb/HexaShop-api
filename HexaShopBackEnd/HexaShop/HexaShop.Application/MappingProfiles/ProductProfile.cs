@@ -33,7 +33,8 @@ namespace HexaShop.Application.MappingProfiles
             CreateMap<Product, GetProductListDto>()
                 .ForMember(dest => dest.ImagesCount, _ => _.MapFrom(src => src.Images.Count()))
                 .ForMember(dest => dest.DetailsCount, _ => _.MapFrom(src => src.Details.Count()))
-                .ForMember(dest => dest.CategoriesCount, _ => _.MapFrom(src => src.Categories.Count()));
+                .ForMember(dest => dest.CategoriesCount, _ => _.MapFrom(src => src.Categories.Count()))
+                .ForMember(dest => dest.MainImgae, _ => _.MapFrom(src => src.MainImage));
         }
     }
 }

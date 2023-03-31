@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HexaShop.Application.Dtos.CategoryDtos.Queries
 {
-    public class GetCategoryListRequest : GetListBaseDto
+    public class GetCategoryListRequestDto : GetListBaseDto
     {
     }
 }

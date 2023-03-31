@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace HexaShop.Application.Dtos.ProductDtos.Queries
 {
-    public class GetProductListRequest : GetListBaseDto
+    public class GetProductListRequestDto : GetListBaseDto
     {
         public int? Score { get; set; }
         public long? Price { get; set; }
+        public bool? IsSpecial { get; set; }
     }
 }

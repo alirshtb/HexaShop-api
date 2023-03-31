@@ -63,7 +63,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
             {
                 File = request.CreateProductDto.MainImage,
                 FileExtension = ".jpg",
-                Name = product.Title + " - MainImage"
+                Name = product.Title + "-MainImage"
             };
             var mainImageAddress = UploadProductImages(fileDto, saveBranch);
 

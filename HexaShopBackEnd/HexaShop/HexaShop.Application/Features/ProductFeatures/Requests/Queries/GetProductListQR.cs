@@ -1,4 +1,5 @@
 ﻿using HexaShop.Application.Dtos.ProductDtos.Queries;
+using HexaShop.Common.Dtos;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace HexaShop.Application.Features.ProductFeatures.Requests.Queries
 {
-    public class GetProductListQR : IRequest<List<GetProductListDto>>
+    public class GetProductListQR : IRequest<GetListResultDto<GetProductListDto>>
     {
-        public GetProductListRequest GetProductListRequest { get; set; }
+        public GetProductListRequestDto GetProductListRequest { get; set; }
     }
 }

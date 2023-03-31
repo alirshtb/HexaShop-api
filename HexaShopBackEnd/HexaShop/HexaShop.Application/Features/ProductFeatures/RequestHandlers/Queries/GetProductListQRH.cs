@@ -2,6 +2,8 @@
 using HexaShop.Application.Constracts.PersistanceContracts;
 using HexaShop.Application.Dtos.ProductDtos.Queries;
 using HexaShop.Application.Features.ProductFeatures.Requests.Queries;
+using HexaShop.Common.Dtos;
+using HexaShop.Domain;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Queries
 {
-    public class GetProductListQRH : IRequestHandler<GetProductListQR, List<GetProductListDto>>
+    public class GetProductListQRH : IRequestHandler<GetProductListQR, GetListResultDto<GetProductListDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -22,31 +24,54 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Queries
             _mapper = mapper;
         }
 
-        public async Task<List<GetProductListDto>> Handle(GetProductListQR request, CancellationToken cancellationToken)
+        public async Task<GetListResultDto<GetProductListDto>> Handle(GetProductListQR request, CancellationToken cancellationToken)
         {
-            var products = await _unitOfWork.ProductRepository.GetListAsync(includes: new List<string>()
+            var includes = new List<string>()
             {
                 "Details",
                 "Images",
                 "Categories"
-            });
+            };
 
-            //if (!string.IsNullOrWhiteSpace(request.GetProductListRequest.Search))
-            //{
-            //    products = (from product in products
-            //                     let search = request.GetProductListRequest.Search.ToLower()
-            //                     let productTitle = product.Title.ToLower()
-            //                     let productDescription = product.Description.ToLower()
-            //                     where productTitle.StartsWith(search) ||
-            //                             productTitle.Contains(search) ||
-            //                             productDescription.StartsWith(search) ||
-            //                             productDescription.Contains(search)
-            //                     select product
-            //        ).AsEnumerable();
-            //}
+            var products = _unitOfWork.ProductRepository.GetQueryableProducts(includes);
 
-            return new List<GetProductListDto>();
+            #region apply filters 
 
+            if (!string.IsNullOrWhiteSpace(request.GetProductListRequest.Search))
+            {
+                products = products.Where(p => p.Title.ToLower().Contains(request.GetProductListRequest.Search) || 
+                                               p.Description.ToLower().Contains(request.GetProductListRequest.Search));
+            }
+
+            if(request.GetProductListRequest.IsSpecial.HasValue)
+            {
+                products = products.Where(p => p.IsSpecial == request.GetProductListRequest.IsSpecial.Value);
+            }
+
+            if(request.GetProductListRequest.Score.HasValue)
+            {
+                products = products.Where(p => p.Score == request.GetProductListRequest.Score.Value);
+            }
+
+            if(request.GetProductListRequest.Price.HasValue)
+            {
+                products = products.Where(p => p.Price == request.GetProductListRequest.Price.Value);
+            }
+
+            #endregion apply filters
+
+            var paginatedList = PagedList<Product>.Create(source: products,
+                                                          pageNumber: request.GetProductListRequest.PageNumber,
+                                                          pageSize: request.GetProductListRequest.PageSize,
+                                                          search: request.GetProductListRequest.Search);
+
+            var values = _mapper.Map<IEnumerable<GetProductListDto>>(paginatedList);
+
+            return new GetListResultDto<GetProductListDto>()
+            {
+                MetaData = paginatedList.MetaData,
+                Values = values
+            };
         }
     }
 }

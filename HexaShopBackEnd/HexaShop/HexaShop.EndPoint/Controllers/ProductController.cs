@@ -89,6 +89,33 @@ namespace HexaShop.EndPoint.Controllers
             }
         }
 
+        /// <summary>
+        /// get product paginated list.
+        /// </summary>
+        /// <param name="getProductListRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<GetProductListDto>>> GetList([FromBody] GetProductListRequestDto getProductListRequest)
+        {
+            try
+            {
+                var request = new GetProductListQR()
+                {
+                     GetProductListRequest = getProductListRequest
+                };
+                var result = await _mediator.Send(request);
+
+                Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(result.MetaData));
+
+                return Ok(result.Values);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

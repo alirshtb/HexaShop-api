@@ -8,38 +8,32 @@ namespace HexaShop.Common.Dtos
 {
     public class PagedList<T> : List<T>
     {
-        public int PageNumber { get; private set; }
-        public int TotalCount { get; private set; }
-        public int PageSize { get; private set; }
-        public int PagesCount { get; private set; } 
-        public int RowsCount { get; private set; }
-        public string? Search { get; set; }
+        public GetListMetaData MetaData { get; set; } = new GetListMetaData();
         public bool HasPreviouse
         {
             get
             {
-                return PageNumber > 1;
+                return MetaData.PageNumber > 1;
             }
         }
         public bool HasNext
         {
             get
             {
-                return PageNumber < PagesCount;
+                return MetaData.PageNumber < MetaData.PagesCount;
             }
         }
 
 
         public PagedList(List<T> dataList, int pageSize, int pageNumber, int totalCount, string? search)
         {
-            PageNumber = pageNumber;
-            TotalCount = totalCount;
-            PageSize = pageSize;
-            RowsCount = dataList.Count();
-            PagesCount = (int)Math.Ceiling(totalCount / (double)pageSize);
+            MetaData.PageNumber = pageNumber;
+            MetaData.TotalCount = totalCount;
+            MetaData.PageSize = pageSize;
+            MetaData.RowsCount = dataList.Count();
+            MetaData.PagesCount = (int)Math.Ceiling(totalCount / (double)pageSize);
+            MetaData.Search = search;
             AddRange(dataList);
-            Search = search;
-            Search = search;
         }
 
         /// <summary>
