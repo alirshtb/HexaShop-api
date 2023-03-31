@@ -16,7 +16,6 @@ namespace HexaShop.Application.MappingProfiles
         {
             CreateMap<CreateCategoryDto, Category>();
             CreateMap<Category, CategoryDto>()
-                .ForMember(dest => dest.ParentId, _ => _.MapFrom(src => src.ParentCategoryId))
                 .ForMember(dest => dest.Childs, _ => _.MapFrom(src => src.ChildCategories));
 
             CreateMap<EditCategoryDto, Category>();

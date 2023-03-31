@@ -14,7 +14,7 @@ using HexaShop.EndPoint.Models.ViewModels.ProductController;
 
 namespace HexaShop.EndPoint.Controllers
 {
-    [Route("api/[controller]/")]
+    [Route("api/[controller]/[action]/")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -38,7 +38,7 @@ namespace HexaShop.EndPoint.Controllers
         /// <param name="createProductViewModel"></param>
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
-        [HttpPost("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateProductDto createProductDto)
         {
             try
@@ -52,6 +52,9 @@ namespace HexaShop.EndPoint.Controllers
                 var createProductResult = await _mediator.Send(createProductCommandRequest);
 
                 createProductResult.ThrowException<int>();
+
+                return CreatedAtAction("Get", controllerName: "Product", routeValues: new { id = createProductResult.ResultData }, value: null);
+
 
                 return Ok(createProductResult.ResultData);
             }
@@ -67,7 +70,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="id">int id</param>
         /// <returns>productDto</returns>
-        [HttpGet("Get/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> Get(int id)
         {
             try
@@ -76,8 +79,6 @@ namespace HexaShop.EndPoint.Controllers
                 {
                     ProductId = id
                 });
-
-                //var result = _mapper.Map<GetProductViewModel>(productDto);
 
                 return Ok(productDto);
 

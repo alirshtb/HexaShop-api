@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HexaShop.Common.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,12 +36,13 @@ namespace HexaShop.Common.CommonExtenstionMethods
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public static IEnumerable<T> GetPaginatedList<T>(this IEnumerable<T> source, int pageNumber, int pageSize)
+        public static IEnumerable<T> GetPaginatedList<T>(this IQueryable<T> source, int pageNumber, int pageSize)
         {
             var result = source.Skip((pageNumber - 1) * pageSize)
                                .Take(pageSize);
 
-            return result;
+            return result.AsEnumerable();
         }
+
     }
 }

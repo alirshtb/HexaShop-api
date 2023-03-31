@@ -11,14 +11,13 @@ namespace HexaShop.Common
         Male = 0,
         Female = 1
     }
-
-    public enum Score
+    
+    public enum ResourceUri
     {
-        SoBad = 0,
-        NotGood = 1,
-        Normal = 2,
-        Nice = 3,
-        Greate = 4
+        NextPage = 0,
+        PreviouseNext = 1,
+        FirstPage = 2,
+        LastPage = 3,
     }
 
     public enum FailureReason

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HexaShop.EndPoint.Controllers
 {
-    [Route("api/[controller]/")]
+    [Route("api/[controller]/[action]/")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="createCategoryDto"></param>
         /// <returns></returns>
-        [HttpPost("Create")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto createCategoryDto)
         {
             try
@@ -38,14 +38,14 @@ namespace HexaShop.EndPoint.Controllers
                     CreateCategoryDto = createCategoryDto
                 };
 
-                var createCategoryResult =  await _mediator.Send(createCategoryRequest);
+                var createCategoryResult = await _mediator.Send(createCategoryRequest);
 
-                if(!createCategoryResult.IsSuccess)
+                if (!createCategoryResult.IsSuccess)
                 {
                     createCategoryResult.ThrowException<int>();
                 }
 
-                return Ok(createCategoryResult.Message);
+                return CreatedAtAction("Get", controllerName: "Category", routeValues: new { id = createCategoryResult.ResultData }, value: null);
 
             }
             catch (Exception ex)
@@ -59,7 +59,8 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("Get/{id}")]
+        [HttpGet("{id}")]
+        [ActionName(nameof(Get))]
         public async Task<ActionResult<CategoryDto>> Get(int id)
         {
             try
@@ -86,7 +87,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="editCategoryDto"></param>
         /// <returns></returns>
-        [HttpPost("Edit")]
+        [HttpPost]
         public async Task<IActionResult> Edit([FromBody] EditCategoryDto editCategoryDto)
         {
             try
@@ -112,24 +113,28 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost("GetList")]
-        public async Task<ActionResult<List<CategoryDto>>> GetList([FromBody] GetCategoryListRequest model)
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<GetParentCategoryListDto>>> GetList(GetCategoryListRequest getCategoryListRequest)
         {
             try
             {
 
                 var request = new GetParentCategoryListQR()
                 {
-                    GetCategoryList = model
+                    GetCategoryList = getCategoryListRequest
                 };
+
                 var result = await _mediator.Send(request);
 
-                return Ok(result);
+                Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(result.MetaData));
+
+                return Ok(result.Values);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
     }
 }

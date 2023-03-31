@@ -1,4 +1,7 @@
-﻿using HexaShop.Domain;
+﻿using HexaShop.Application.Dtos.CategoryDtos.Queries;
+using HexaShop.Application.Dtos.Common;
+using HexaShop.Common.Dtos;
+using HexaShop.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

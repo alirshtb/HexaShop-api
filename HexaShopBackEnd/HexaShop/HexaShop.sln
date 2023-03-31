@@ -23,7 +23,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexaShop.Persistance", "Hex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexaShop.EndPoint", "HexaShop.EndPoint\HexaShop.EndPoint.csproj", "{60224C04-B208-4C68-A405-704079E51AC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexaShop.Infrastructure", "HexaShop.Infrastructure\HexaShop.Infrastructure.csproj", "{906BE673-3BE5-4BD9-A632-DE172D7DC652}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HexaShop.Infrastructure", "HexaShop.Infrastructure\HexaShop.Infrastructure.csproj", "{906BE673-3BE5-4BD9-A632-DE172D7DC652}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53930F2A-7662-41AA-897F-B4053E46D783}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

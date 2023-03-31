@@ -1,7 +1,9 @@
-﻿using HexaShop.Application.Constracts.PersistanceContracts;
+﻿using AutoMapper;
+using HexaShop.Application.Constracts.PersistanceContracts;
+using HexaShop.Application.Dtos.CategoryDtos.Queries;
+using HexaShop.Common.CommonExtenstionMethods;
+using HexaShop.Common.Dtos;
 using HexaShop.Domain;
-
-
 
 namespace HexaShop.Persistance.Repositories
 {
@@ -16,16 +18,16 @@ namespace HexaShop.Persistance.Repositories
         }
 
         /// <summary>
-        /// get parent categories as queryable.
+        /// get paginated parents
         /// </summary>
+        /// <param name="request"></param>
         /// <param name="includes"></param>
         /// <returns></returns>
         public IQueryable<Category> GetParents(List<string> includes)
         {
-            var parents = GetAsQueryable(includes: includes).Where(c => c.ParentCategoryId == null)
-                                                            .AsQueryable();
-            return parents;
+            var parentCategories = GetAsQueryable(includes: includes).Where(c => c.ParentCategoryId == null);
+            return parentCategories.AsQueryable();
+            
         }
-
     }
 }

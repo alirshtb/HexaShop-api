@@ -2,17 +2,18 @@
 using HexaShop.Application.Constracts.PersistanceContracts;
 using HexaShop.Application.Dtos.CategoryDtos.Queries;
 using HexaShop.Application.Features.CategoryFeatures.Requests.Queries;
+using HexaShop.Common;
 using HexaShop.Common.CommonExtenstionMethods;
+using HexaShop.Common.Dtos;
+using HexaShop.Domain;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 
 namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Queries
 {
-    public class GetParentCategoryListQRH : IRequestHandler<GetParentCategoryListQR, List<GetParentCategoryListDto>>
+    public class GetParentCategoryListQRH : IRequestHandler<GetParentCategoryListQR, GetListResultDto<GetParentCategoryListDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -29,38 +30,45 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Queries
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<List<GetParentCategoryListDto>> Handle(GetParentCategoryListQR request, CancellationToken cancellationToken)
+        public async Task<GetListResultDto<GetParentCategoryListDto>> Handle(GetParentCategoryListQR request, CancellationToken cancellationToken)
         {
-            var parentCategories = _unitOfWork.CategoryRepository.GetParents(new List<string>()
+            var includes = new List<string>()
             {
                 "ChildCategories"
-            });
+            };
 
+            var parentCategories = _unitOfWork.CategoryRepository.GetParents(includes: includes);
 
-            if(!string.IsNullOrWhiteSpace(request.GetCategoryList.Search))
+            if (!string.IsNullOrWhiteSpace(request.GetCategoryList.Search))
             {
-                parentCategories = (from category in parentCategories
-                                    let search = request.GetCategoryList.Search.ToLower()
-                                    let categoryName = category.Name.ToLower()
-                                    let categoryDescription = category.Description.ToLower()
-                                    where categoryName.StartsWith(search) ||
-                                          categoryName.Contains(search) ||
-                                          categoryDescription.StartsWith(search) ||
-                                          categoryDescription.Contains(search)
-                                    select category
-                                    );
+                parentCategories = parentCategories.Where(pc => pc.Name.ToLower().Contains(request.GetCategoryList.Search) ||
+                                                                pc.Description.ToLower().Contains(request.GetCategoryList.Search));
             }
 
+            // TODO : ordering ...
 
-            var paginatedList = parentCategories.AsEnumerable()
-                                                .GetPaginatedList(request.GetCategoryList.PageNumber,
-                                                                  request.GetCategoryList.PageSize)
-                                                .ToList();
+            var paginatedList = PagedList<Category>.Create(parentCategories,
+                                                           pageSize: request.GetCategoryList.PageSize,
+                                                           pageNumber: request.GetCategoryList.PageNumber,
+                                                           search: request.GetCategoryList.Search);
 
-            var result = _mapper.Map<List<GetParentCategoryListDto>>(paginatedList);
+            var values = _mapper.Map<IEnumerable<GetParentCategoryListDto>>(paginatedList);
+            var metaData = new GetListMetaData()
+            {
+                PageNumber = paginatedList.PageNumber,
+                PageSize = paginatedList.PageSize,
+                PagesCount= paginatedList.PagesCount,
+                RowsCount= paginatedList.RowsCount,
+                TotalCount = paginatedList.TotalCount,
+            };
 
+            var result = new GetListResultDto<GetParentCategoryListDto>()
+            {
+                Values = values,
+                MetaData = metaData
+            };
             return result;
-            
         }
+
     }
 }

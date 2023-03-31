@@ -11,6 +11,7 @@ namespace HexaShop.Common
 {
     public static class CommonStaticFunctions
     {
+
         /// <summary>
         /// Retturn ResultDto
         /// </summary>
