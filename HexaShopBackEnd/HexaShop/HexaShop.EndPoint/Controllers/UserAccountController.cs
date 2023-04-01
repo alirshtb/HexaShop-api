@@ -17,7 +17,7 @@ using HexaShop.Common.CommonExtenstionMethods;
 
 namespace HexaShop.EndPoint.Controllers
 {
-    [Route("api/[controller]/")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserAccountController : ControllerBase
     {
@@ -60,7 +60,7 @@ namespace HexaShop.EndPoint.Controllers
         /// <param name="signUpViewModel"></param>
         /// <returns></returns>
         /// <exception cref="InvalidModelStateException"></exception>
-        [HttpPost("SignUp")]
+        [HttpPost]
         public async Task<ActionResult<RequestTokenResultDto>> SignUp([FromBody] SignUpViewModel signUpViewModel)
         {
             try
@@ -138,35 +138,78 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="signInViewModel"></param>
         /// <returns></returns>
-        [HttpPost("SignIn")]
+        [HttpPost]
         public async Task<IActionResult> SignIn([FromBody] SignInViewModel signInViewModel)
         {
-
-            var user = await _userManager.FindByNameAsync(signInViewModel.UserName);
-
-            if (user == null)
+            try
             {
-                return NotFound(ApplicationMessages.InValidInformation);
+                var user = await _userManager.FindByNameAsync(signInViewModel.UserName);
+
+                if (user == null)
+                {
+                    throw new NotFoundException(ApplicationMessages.InValidInformation);
+                }
+
+                if (!user.IsActive)
+                {
+                    throw new Exception(ApplicationMessages.UserIsNotActive);
+                }
+
+                if (!await IsUserPasswordCurrect(user, signInViewModel.Password))
+                {
+                    throw new InvalidModelStateException(signInViewModel, ApplicationMessages.InValidInformation);
+                }
+
+                await _signInManager.SignInAsync(user, signInViewModel.RememberMe);
+
+
+                // --- request token for user --- //
+                var requestTokenResult = await _jwtService.CreateTokenAsync(new RequestTokenDto()
+                {
+                    UserName = signInViewModel.UserName,
+                    Password = signInViewModel.Password
+                });
+
+                return Ok(requestTokenResult);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            if (!await IsUserPasswordCurrect(user, signInViewModel.Password))
-            {
-                return BadRequest(ApplicationMessages.InValidInformation);
-            }
-
-            await _signInManager.SignInAsync(user, signInViewModel.RememberMe);
-
-
-            // --- request token for user --- //
-            var requestTokenResult = await _jwtService.CreateTokenAsync(new RequestTokenDto()
-            {
-                UserName = signInViewModel.UserName,
-                Password = signInViewModel.Password
-            });
-
-            return Ok(requestTokenResult);
         }
 
+
+        /// <summary>
+        /// change user actvity.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ChangeUserActivity(string id)
+        {
+            try
+            {
+                var appIdentityUser = await _userManager.FindByIdAsync(id);
+                if (appIdentityUser == null)
+                {
+                    throw new NotFoundException(ApplicationMessages.UserNotFound);
+                }
+
+                appIdentityUser.IsActive = !appIdentityUser.IsActive;
+
+                await _userManager.UpdateAsync(appIdentityUser);
+
+                var activityMessage = appIdentityUser.IsActive == true ? "فعال" : "غیر فعال";
+                var message = string.Format(ApplicationMessages.ChangeUserActivity, activityMessage);
+
+                return Ok(message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
 

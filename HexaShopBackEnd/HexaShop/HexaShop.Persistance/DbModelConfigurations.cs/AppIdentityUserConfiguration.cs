@@ -25,6 +25,9 @@ namespace HexaShop.Persistance.DbModelConfigurations
 
             builder.HasIndex(p => p.Email).IsUnique();
 
+            builder.Property(u => u.IsActive)
+                .IsRequired()
+                .HasDefaultValue(true);
 
             builder.HasMany(u => u.Roles)
                 .WithOne()

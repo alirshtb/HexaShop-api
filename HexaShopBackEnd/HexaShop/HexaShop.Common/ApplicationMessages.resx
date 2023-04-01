@@ -133,6 +133,10 @@
     <value>دسته بندی یافت نشد.</value>
     <comment>Category Not Found.</comment>
   </data>
+  <data name="ChangeUserActivity" xml:space="preserve">
+    <value>کاربر {0} شد.</value>
+    <comment>change user activity.</comment>
+  </data>
   <data name="DuplicateEmail" xml:space="preserve">
     <value>کاربری با این ایمیل قبلا در دیتا بیس ثبت نام کرده.</value>
     <comment>Duplicate user Email</comment>
@@ -176,6 +180,10 @@
   <data name="UserCreatedSuccessfuly" xml:space="preserve">
     <value>کاربر با موفقیت ایجاد شد.</value>
     <comment>Sign Up</comment>
+  </data>
+  <data name="UserIsNotActive" xml:space="preserve">
+    <value>کاربر غیر فعال است.</value>
+    <comment>user deactivated.</comment>
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>کاربر با این نام کاربری یافت نشد.</value>

@@ -97,6 +97,15 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to کاربر {0} شد..
+        /// </summary>
+        public static string ChangeUserActivity {
+            get {
+                return ResourceManager.GetString("ChangeUserActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to کاربری با این ایمیل قبلا در دیتا بیس ثبت نام کرده..
         /// </summary>
         public static string DuplicateEmail {
@@ -192,6 +201,15 @@ namespace HexaShop.Common {
         public static string UserCreatedSuccessfuly {
             get {
                 return ResourceManager.GetString("UserCreatedSuccessfuly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to کاربر غیر فعال است..
+        /// </summary>
+        public static string UserIsNotActive {
+            get {
+                return ResourceManager.GetString("UserIsNotActive", resourceCulture);
             }
         }
         

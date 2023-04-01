@@ -3,26 +3,17 @@ using HexaShop.ApiEndPoint.DynamicAuthorization.JWT;
 using HexaShop.Application;
 using HexaShop.Persistance;
 using HexaShop.Persistance.Extensions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-
 // Add services to the container.
 ConfigureServices(builder.Services, builder.Configuration);
 
-
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 Configure(app);
-
-
-
 
 // --- configure services --- //
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
@@ -56,11 +47,6 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
 }
 
-
-
-
-
-
 // --- config middle wares --- //
 void Configure(WebApplication app)
 {
@@ -80,12 +66,12 @@ void Configure(WebApplication app)
     app.UseStaticFiles();
 
 
-    #if DEBUG
-        app.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HexaShop.Api v1"));
-    #else
-    #endif
+#if DEBUG
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HexaShop.Api v1"));
+#else
+#endif
 
     app.UseHttpsRedirection();
 

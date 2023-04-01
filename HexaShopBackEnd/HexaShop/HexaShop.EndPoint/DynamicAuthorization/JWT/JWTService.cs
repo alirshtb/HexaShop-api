@@ -38,6 +38,10 @@ namespace HexaShop.ApiEndPoint.DynamicAuthorization.JWT
                 throw new Exception(message: ApplicationMessages.InValidInformation);
             }
 
+            if (!user.IsActive)
+            {
+                throw new Exception(ApplicationMessages.UserIsNotActive);
+            }
 
 
             var nowTime = DateTime.UtcNow;
@@ -77,6 +81,11 @@ namespace HexaShop.ApiEndPoint.DynamicAuthorization.JWT
             if (user == null)
             {
                 throw new Exception(ApplicationMessages.InValidInformation);
+            }
+
+            if (!user.IsActive)
+            {
+                throw new Exception(ApplicationMessages.UserIsNotActive);
             }
 
             var userRefreshToken = user.RefreshTokens.SingleOrDefault(rt => rt.Token == refreshToken);
