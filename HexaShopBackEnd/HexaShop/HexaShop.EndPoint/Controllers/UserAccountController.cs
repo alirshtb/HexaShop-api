@@ -201,7 +201,7 @@ namespace HexaShop.EndPoint.Controllers
                 await _userManager.UpdateAsync(appIdentityUser);
 
                 var activityMessage = appIdentityUser.IsActive == true ? "فعال" : "غیر فعال";
-                var message = string.Format(ApplicationMessages.ChangeUserActivity, activityMessage);
+                var message = string.Format(ApplicationMessages.ChangeActivity, "کاربر", activityMessage);
 
                 return Ok(message);
             }

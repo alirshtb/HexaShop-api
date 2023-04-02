@@ -133,13 +133,25 @@
     <value>دسته بندی یافت نشد.</value>
     <comment>Category Not Found.</comment>
   </data>
-  <data name="ChangeUserActivity" xml:space="preserve">
-    <value>کاربر {0} شد.</value>
-    <comment>change user activity.</comment>
+  <data name="ChangeActivity" xml:space="preserve">
+    <value>{0} {1} شد.</value>
+    <comment>change  activity.</comment>
   </data>
   <data name="DuplicateEmail" xml:space="preserve">
     <value>کاربری با این ایمیل قبلا در دیتا بیس ثبت نام کرده.</value>
     <comment>Duplicate user Email</comment>
+  </data>
+  <data name="FailUpload" xml:space="preserve">
+    <value>تصاویر آپلود نشد.</value>
+    <comment>upload proccess fialed.</comment>
+  </data>
+  <data name="FileDeleted" xml:space="preserve">
+    <value>فایل با موفقیت حذف شد.</value>
+    <comment>File deleted successfuly.</comment>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>فایل یافت نشد.</value>
+    <comment>File not Fount.</comment>
   </data>
   <data name="FileUploaded" xml:space="preserve">
     <value>فایل آپلود شد</value>
@@ -168,6 +180,10 @@
   <data name="ProductAdded" xml:space="preserve">
     <value>محصول با موفقیت اضافه شد.</value>
     <comment>Product Added</comment>
+  </data>
+  <data name="ProductEdited" xml:space="preserve">
+    <value>محصول با موفقیت ویرایش شد.</value>
+    <comment>product edited successfuly.</comment>
   </data>
   <data name="ProductNotFound" xml:space="preserve">
     <value>محصول یافت نشد.</value>

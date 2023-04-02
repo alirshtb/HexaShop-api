@@ -54,12 +54,14 @@ namespace HexaShop.Infrastructure.Repositories
   
             var savePath = Path.Combine(basePath, fileName);
 
-            // --- convert base64string to array of bytes --- //
-            var fileBytes = Convert.FromBase64String(fileDto.File);
+            
 
 
             try
             {
+                // --- convert base64string to array of bytes --- //
+                var fileBytes = Convert.FromBase64String(fileDto.File);
+
                 // --- write file --- //
                 File.WriteAllBytes(savePath, fileBytes);
 
@@ -75,7 +77,7 @@ namespace HexaShop.Infrastructure.Repositories
                 return new ResultDto<string>()
                 {
                     IsSuccess = false,
-                    Message = fileDto.FileExtension.ToString(),
+                    Message = ApplicationMessages.FailUpload,
                     ResultData = fileDto.FileExtension.ToString(),
                     Reason = Common.FailureReason.UnSuccessful
                 };
@@ -83,7 +85,33 @@ namespace HexaShop.Infrastructure.Repositories
 
         }
 
+        /// <summary>
+        /// delete a file using path
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public ResultDto<string> DeleteFile(string path)
+        {
+            if(!File.Exists(path))
+            {
+                return new ResultDto<string>()
+                {
+                    IsSuccess = false,
+                    Message = ApplicationMessages.FileNotFound,
+                    Reason = FailureReason.NotFound,
+                    ResultData = path
+                };
+            }
 
+            File.Delete(path);
+
+            return new ResultDto<string>()
+            {
+                IsSuccess = true,
+                Message = ApplicationMessages.FileDeleted,
+                ResultData = path,
+            };
+        }
 
 
 

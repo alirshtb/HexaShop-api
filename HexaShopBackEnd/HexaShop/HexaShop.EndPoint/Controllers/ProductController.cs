@@ -54,9 +54,6 @@ namespace HexaShop.EndPoint.Controllers
                 createProductResult.ThrowException<int>();
 
                 return CreatedAtAction("Get", controllerName: "Product", routeValues: new { id = createProductResult.ResultData }, value: null);
-
-
-                return Ok(createProductResult.ResultData);
             }
             catch (Exception ex)
             {
@@ -116,6 +113,55 @@ namespace HexaShop.EndPoint.Controllers
             }
         }
 
+        /// <summary>
+        /// change product activity.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ChangeActivity(int id)
+        {
+            try
+            {
+                var request = new ChangeProductActivityCR()
+                {
+                    ProductId = id
+                };
 
+                var result = await _mediator.Send(request);
+
+                result.ThrowException<int>();
+
+                return Ok(result.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Edit product.
+        /// </summary>
+        /// <param name="editProductDto"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromBody] EditProductDto editProductDto)
+        {
+            try
+            {
+                var request = new EditProductCR()
+                {
+                    EditProductData = editProductDto
+                };
+                var result = await _mediator.Send(request);
+
+                return Ok(result.Message + " " + result.ResultData);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

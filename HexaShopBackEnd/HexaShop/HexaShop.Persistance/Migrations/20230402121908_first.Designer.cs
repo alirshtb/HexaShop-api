@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HexaShop.Persistance.Migrations
 {
     [DbContext(typeof(HexaShopDbContext))]
-    [Migration("20230401100821_addIsActiveToAppIdentityUserTbl")]
-    partial class addIsActiveToAppIdentityUserTbl
+    [Migration("20230402121908_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,7 +82,9 @@ namespace HexaShop.Persistance.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -614,13 +616,13 @@ namespace HexaShop.Persistance.Migrations
                     b.HasOne("HexaShop.Domain.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("HexaShop.Domain.Product", "Product")
                         .WithMany("Categories")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Category");

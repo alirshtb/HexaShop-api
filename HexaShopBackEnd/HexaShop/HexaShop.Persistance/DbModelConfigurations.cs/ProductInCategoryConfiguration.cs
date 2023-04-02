@@ -18,15 +18,15 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
 
             #region Relations
 
-            builder.HasOne(pc => pc.Product)
-                .WithMany(p => p.Categories)
-                .HasForeignKey(pc => pc.ProductId)
-                .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
+            //builder.HasOne(pc => pc.Product)
+            //    .WithMany(p => p.Categories)
+            //    .HasForeignKey(pc => pc.ProductId)
+            //    .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
 
-            builder.HasOne(pc => pc.Category)
-                .WithMany(c => c.Products)
-                .HasForeignKey(pc => pc.CategoryId)
-                .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
+            //builder.HasOne(pc => pc.Category)
+            //    .WithMany(c => c.Products)
+            //    .HasForeignKey(pc => pc.CategoryId)
+            //    .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
 
             #endregion Relations 
         }

@@ -34,12 +34,15 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
 
             if (!validateResult.IsValid)
             {
-                return CommonStaticFunctions.ReturnResult<int>(isSuccessful: false,
-                                                               message: validateResult.Errors.FirstOrDefault()
-                                                                                      .ErrorMessage
-                                                                                      .ToString(),
-                                                               reason: FailureReason.InvalidModel,
-                                                               resultData: 0);
+                return new ResultDto<int>()
+                {
+                    IsSuccess = false,
+                    Message = validateResult.Errors.FirstOrDefault()
+                                                    .ErrorMessage
+                                                    .ToString(),
+                    Reason = FailureReason.InvalidModel,
+                    ResultData = 0
+                };
             }
 
             #endregion
@@ -133,10 +136,12 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
             _unitOfWork.Commit();
 
 
-            return CommonStaticFunctions.ReturnResult<int>(isSuccessful: true,
-                                                           message: ApplicationMessages.ProductAdded,
-                                                           resultData: product.Id);
-
+            return new ResultDto<int>()
+            {
+                IsSuccess = true,
+                Message = ApplicationMessages.ProductAdded,
+                ResultData = product.Id
+            };
         }
 
         /// <summary>

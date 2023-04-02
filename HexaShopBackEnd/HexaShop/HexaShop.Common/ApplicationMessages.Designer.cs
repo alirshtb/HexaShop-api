@@ -97,11 +97,11 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to کاربر {0} شد..
+        ///   Looks up a localized string similar to {0} {1} شد..
         /// </summary>
-        public static string ChangeUserActivity {
+        public static string ChangeActivity {
             get {
-                return ResourceManager.GetString("ChangeUserActivity", resourceCulture);
+                return ResourceManager.GetString("ChangeActivity", resourceCulture);
             }
         }
         
@@ -111,6 +111,33 @@ namespace HexaShop.Common {
         public static string DuplicateEmail {
             get {
                 return ResourceManager.GetString("DuplicateEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تصاویر آپلود نشد..
+        /// </summary>
+        public static string FailUpload {
+            get {
+                return ResourceManager.GetString("FailUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فایل با موفقیت حذف شد..
+        /// </summary>
+        public static string FileDeleted {
+            get {
+                return ResourceManager.GetString("FileDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فایل یافت نشد..
+        /// </summary>
+        public static string FileNotFound {
+            get {
+                return ResourceManager.GetString("FileNotFound", resourceCulture);
             }
         }
         
@@ -174,6 +201,15 @@ namespace HexaShop.Common {
         public static string ProductAdded {
             get {
                 return ResourceManager.GetString("ProductAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to محصول با موفقیت ویرایش شد..
+        /// </summary>
+        public static string ProductEdited {
+            get {
+                return ResourceManager.GetString("ProductEdited", resourceCulture);
             }
         }
         

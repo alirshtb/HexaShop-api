@@ -28,13 +28,24 @@ namespace HexaShop.Application.MappingProfiles
             CreateMap<Product, ProductDto>()
                 .ForMember(dest => dest.Id, _ => _.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Images, _ => _.MapFrom(src => src.Images))
-                .ForMember(dest => dest.Details, _ => _.MapFrom(src => src.Details));
+                .ForMember(dest => dest.Details, _ => _.MapFrom(src => src.Details))
+                .ForMember(dest => dest.MainImage, _ => _.MapFrom(src => src.MainImage));
 
             CreateMap<Product, GetProductListDto>()
                 .ForMember(dest => dest.ImagesCount, _ => _.MapFrom(src => src.Images.Count()))
                 .ForMember(dest => dest.DetailsCount, _ => _.MapFrom(src => src.Details.Count()))
                 .ForMember(dest => dest.CategoriesCount, _ => _.MapFrom(src => src.Categories.Count()))
                 .ForMember(dest => dest.MainImgae, _ => _.MapFrom(src => src.MainImage));
+
+            CreateMap<EditProductDto, Product>()
+                .ForMember(dest => dest.MainImage, _ => _.Ignore())
+                .ForMember(dest => dest.Images, _ => _.Ignore())
+                .ForMember(dest => dest.Categories, _ => _.Ignore())
+                .ForMember(dest => dest.Id, _ => _.MapFrom(src => src.ProductId))
+                .ForMember(dest => dest.Price, _ => _.MapFrom(src => src.Price))
+                .ForMember(dest => dest.Description, _ => _.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Title, _ => _.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Details, _ => _.MapFrom(src => src.Details));
         }
     }
 }

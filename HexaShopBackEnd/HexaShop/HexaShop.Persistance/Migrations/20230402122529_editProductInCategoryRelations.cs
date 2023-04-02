@@ -5,7 +5,7 @@
 namespace HexaShop.Persistance.Migrations
 {
     /// <inheritdoc />
-    public partial class EditAppUserTbl : Migration
+    public partial class editProductInCategoryRelations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

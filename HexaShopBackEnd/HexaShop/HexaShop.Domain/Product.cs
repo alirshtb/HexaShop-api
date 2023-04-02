@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,10 +21,13 @@ namespace HexaShop.Domain
 
 
         #region Relations 
-
         public virtual ICollection<Detail> Details { get; set; }
         public virtual ICollection<ImageSource> Images { get; set; }
         public virtual ICollection<ProductInCategory> Categories { get; set; }
         #endregion Relations
     }
 }
+
+
+
+

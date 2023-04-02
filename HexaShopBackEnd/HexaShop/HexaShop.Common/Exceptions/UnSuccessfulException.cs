@@ -8,7 +8,7 @@ namespace HexaShop.Common.Exceptions
 {
     public class UnSuccessfulException : ApplicationException
     {
-        public UnSuccessfulException(string message) : base(ApplicationMessages.InValidInformation)
+        public UnSuccessfulException(string message) : base(message)
         {
 
         }

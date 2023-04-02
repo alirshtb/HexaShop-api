@@ -6,5 +6,6 @@ namespace HexaShop.Application.Constracts.InfrastructureContracts
     public interface IFileRepository
     {
         ResultDto<string> UploadImageThroughBase64(FileDto<string> fileDto, string branchName);
+        ResultDto<string> DeleteFile(string path);
     }
 }
