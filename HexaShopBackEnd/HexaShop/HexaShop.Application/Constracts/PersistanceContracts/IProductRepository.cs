@@ -7,7 +7,8 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
         IQueryable<Product> GetQueryableProducts(List<string> includes);
         Task RemoveFromCategory(int categoryId, int productId);
         Task AddToCategory(int productId, int categoryId);
-        Task DeleteProductImages(int productId);
-        Task AddImagesToProduct(List<ImageSource> images, int productId);
+        Task DeletetImages(int productId);
+        Task AddImages(List<ImageSource> images, int productId);
+        IQueryable<Product> GetLatestActivesQueryable(List<string> includes);
     }
 }

@@ -118,8 +118,8 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
             product.MainImage = newMainImageAddress;
 
             // --- delete product all images and then add new images --- //
-            await _unitOfWork.ProductRepository.DeleteProductImages(product.Id);
-            await _unitOfWork.ProductRepository.AddImagesToProduct(newImagesAddresses, product.Id);
+            await _unitOfWork.ProductRepository.DeletetImages(product.Id);
+            await _unitOfWork.ProductRepository.AddImages(newImagesAddresses, product.Id);
 
             await _unitOfWork.ProductRepository.UpdateAsync(product);
 

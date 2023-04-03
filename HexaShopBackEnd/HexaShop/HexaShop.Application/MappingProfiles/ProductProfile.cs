@@ -46,6 +46,11 @@ namespace HexaShop.Application.MappingProfiles
                 .ForMember(dest => dest.Description, _ => _.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Title, _ => _.MapFrom(src => src.Title))
                 .ForMember(dest => dest.Details, _ => _.MapFrom(src => src.Details));
+
+
+            CreateMap<Product, GetProductToShowDto>()
+                .ForMember(dest => dest.MainImageAddress, _ => _.MapFrom(src => src.MainImage));
+
         }
     }
 }

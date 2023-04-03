@@ -11,6 +11,8 @@ namespace HexaShop.EndPoint.MapperProfiles
             CreateMap<ProductDto, GetProductViewModel>()
                 .ForMember(dest => dest.Images, _ => _.MapFrom(src => src.Images))
                 .ForMember(dest => dest.Details, _ => _.MapFrom(src => src.Details));
+
+            CreateMap<GetProductToShowDto, GetProductToShowViewModel>();
         }
     }
 }

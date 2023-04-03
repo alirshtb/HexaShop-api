@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,8 @@ namespace HexaShop.Application.Dtos.Common
         private string? _search { get; set; }
         private int _pageNumber { get; set; }
         private int _pageSize { get; set; }
+        private string? _orderBy { get; set; }
+        private string? _orderDirection { get; set; }
 
 
         public string? Search
@@ -44,6 +47,28 @@ namespace HexaShop.Application.Dtos.Common
             set
             {
                 if(value > 0) { _pageSize = value; }
+            }
+        }
+        public string? OrderBy
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(_orderBy) ? _orderBy : "id";
+            }
+            set
+            {
+                OrderBy = !string.IsNullOrWhiteSpace(value) ? value : "id";
+            }
+        }
+        public string? OrderDirection
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(_orderDirection) ? _orderDirection : "asc";
+            }
+            set
+            {
+                _orderDirection = !string.IsNullOrWhiteSpace(value) ? value : "asc";
             }
         }
 

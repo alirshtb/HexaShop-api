@@ -20,7 +20,7 @@ namespace HexaShop.EndPoint.Controllers
         [HttpGet]
         public async Task<IActionResult> RemoveImages(int id)
         {
-            await _unitOfWork.ProductRepository.DeleteProductImages(id);
+            await _unitOfWork.ProductRepository.DeletetImages(id);
             return Ok();
         }
 
@@ -28,7 +28,7 @@ namespace HexaShop.EndPoint.Controllers
         [HttpGet]
         public async Task<IActionResult> AddImageToProduct(int id)
         {
-            await _unitOfWork.ProductRepository.AddImagesToProduct(images: new List<ImageSource>()
+            await _unitOfWork.ProductRepository.AddImages(images: new List<ImageSource>()
             {
                 new ImageSource()
                 {

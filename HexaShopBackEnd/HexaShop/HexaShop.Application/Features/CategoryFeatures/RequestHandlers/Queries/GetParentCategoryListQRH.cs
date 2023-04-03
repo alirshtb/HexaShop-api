@@ -45,7 +45,11 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Queries
                                                                 pc.Description.ToLower().Contains(request.GetCategoryList.Search));
             }
 
-            // TODO : ordering ...
+            #region Apply Ordering
+
+            parentCategories = parentCategories.PrivateOrderBy(request.GetCategoryList.OrderBy, request.GetCategoryList.OrderDirection);
+
+            #endregion apply ordering
 
             var paginatedList = PagedList<Category>.Create(parentCategories,
                                                            pageSize: request.GetCategoryList.PageSize,

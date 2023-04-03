@@ -14,53 +14,40 @@ using System.Threading.Tasks;
 
 namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Queries
 {
-    public class GetProductListQRH : IRequestHandler<GetProductListQR, GetListResultDto<GetProductListDto>>
+    public class GetLatestProductsQRH : IRequestHandler<GetLatestProductsQR, GetListResultDto<GetProductToShowDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetProductListQRH(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetLatestProductsQRH(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<GetListResultDto<GetProductListDto>> Handle(GetProductListQR request, CancellationToken cancellationToken)
+        public async Task<GetListResultDto<GetProductToShowDto>> Handle(GetLatestProductsQR request, CancellationToken cancellationToken)
         {
             var includes = new List<string>()
             {
-                "Details",
-                "Images",
                 "Categories"
             };
 
-            var products = _unitOfWork.ProductRepository.GetQueryableProducts(includes);
+            var products = _unitOfWork.ProductRepository.GetLatestActivesQueryable(includes);
 
-            #region apply filters 
+            #region Apply Filters 
 
             if (!string.IsNullOrWhiteSpace(request.GetProductListRequest.Search))
             {
-                products = products.Where(p => p.Title.ToLower().Contains(request.GetProductListRequest.Search) || 
+                products = products.Where(p => p.Title.ToLower().Contains(request.GetProductListRequest.Search) ||
                                                p.Description.ToLower().Contains(request.GetProductListRequest.Search));
             }
 
-            if(request.GetProductListRequest.IsSpecial.HasValue)
+            if(request.GetProductListRequest.CategoryId.HasValue)
             {
-                products = products.Where(p => p.IsSpecial == request.GetProductListRequest.IsSpecial.Value);
-            }
-
-            if(request.GetProductListRequest.Score.HasValue)
-            {
-                products = products.Where(p => p.Score == request.GetProductListRequest.Score.Value);
-            }
-
-            if(request.GetProductListRequest.Price.HasValue)
-            {
-                products = products.Where(p => p.Price == request.GetProductListRequest.Price.Value);
+                products = products.Where(p => p.Categories.Any(c => c.CategoryId == request.GetProductListRequest.CategoryId));
             }
 
             #endregion apply filters
-
 
             #region Apply Ordering
 
@@ -68,19 +55,20 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Queries
 
             #endregion apply ordering
 
-
             var paginatedList = PagedList<Product>.Create(source: products,
                                                           pageNumber: request.GetProductListRequest.PageNumber,
                                                           pageSize: request.GetProductListRequest.PageSize,
                                                           search: request.GetProductListRequest.Search);
 
-            var values = _mapper.Map<IEnumerable<GetProductListDto>>(paginatedList);
+            var values = _mapper.Map<IEnumerable<GetProductToShowDto>>(paginatedList);
 
-            return new GetListResultDto<GetProductListDto>()
+            var result = new GetListResultDto<GetProductToShowDto>()
             {
-                MetaData = paginatedList.MetaData,
-                Values = values
+                Values = values,
+                MetaData = paginatedList.MetaData
             };
+
+            return await Task.FromResult(result);
         }
     }
 }

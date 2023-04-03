@@ -163,5 +163,34 @@ namespace HexaShop.EndPoint.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        /// <summary>
+        /// get product with less details to show on web site.
+        /// </summary>
+        /// <param name="getProductListRequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<GetProductToShowViewModel>>> GetLatest([FromBody] GetLatedProductListRequestDto getProductListRequest)
+        {
+            try
+            {
+                var request = new GetLatestProductsQR()
+                {
+                    GetProductListRequest = getProductListRequest
+                };
+
+                var result = await _mediator.Send(request);
+
+                Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(result.MetaData));
+
+                return Ok(_mapper.Map<IEnumerable<GetProductToShowViewModel>>(result.Values));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

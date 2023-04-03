@@ -94,3 +94,4 @@ void Configure(WebApplication app)
 
     app.Run();
 }
+

@@ -40,6 +40,7 @@ namespace HexaShop.Persistance.Repositories
             //var property = entity.GetType().GetProperties();
             //var id = (int)property.Where(p => p.Name == "Id").FirstOrDefault().GetValue(entity);
             //return id;
+            await Task.CompletedTask;
         }
 
         public void AddRange(IEnumerable<T> entities)
@@ -57,6 +58,7 @@ namespace HexaShop.Persistance.Repositories
         {
             await _dbContext.AddRangeAsync(entities);
             await _dbContext.SaveChangesAsync();
+            await Task.CompletedTask;
         }
 
         /// <summary>

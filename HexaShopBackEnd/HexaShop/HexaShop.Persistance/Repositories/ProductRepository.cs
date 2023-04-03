@@ -88,7 +88,7 @@ namespace HexaShop.Persistance.Repositories
         /// </summary>
         /// <param name="productId"></param>
         /// <returns></returns>
-        public async Task DeleteProductImages(int productId)
+        public async Task DeletetImages(int productId)
         {
             var product = await GetAsync(productId, includes: new List<string>()
             {
@@ -106,7 +106,7 @@ namespace HexaShop.Persistance.Repositories
         /// <param name="productId"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task AddImagesToProduct(List<ImageSource> images, int productId)
+        public async Task AddImages(List<ImageSource> images, int productId)
         {
             var product = await GetAsync(productId, includes: new List<string>()
             {
@@ -119,6 +119,18 @@ namespace HexaShop.Persistance.Repositories
             });
 
             await _dbContext.SaveChangesAsync();
+            await Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// select 
+        /// </summary>
+        /// <param name="includes"></param>
+        /// <returns></returns>
+        public IQueryable<Product> GetLatestActivesQueryable(List<string> includes)
+        {
+            var result = GetAsQueryable(includes).Where(p => p.IsActive == true).OrderByDescending(p => p.DateCreated);
+            return result;
         }
     }
 }
