@@ -15,6 +15,7 @@ namespace HexaShop.Domain
         public string Name { get; set; }
         [MinLength(10)]
         public string Description { get; set; }
+        public string Image { get; set; }
 
 
         #region Relations 

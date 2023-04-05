@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\AppUserDtos\Queries\" />
-    <Folder Include="Dtos\Common\Validations\" />
     <Folder Include="Dtos\FileDtos\" />
     <Folder Include="Features\AppUserFeatures\RequestHandlers\Queries\" />
     <Folder Include="Features\AppUserFeatures\Requests\Queries\" />

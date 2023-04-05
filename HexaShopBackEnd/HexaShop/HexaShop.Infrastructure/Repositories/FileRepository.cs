@@ -3,6 +3,7 @@ using HexaShop.Common.CommonDtos;
 using HexaShop.Common;
 using Microsoft.AspNetCore.Hosting;
 using HexaShop.Common.Dtos;
+using HexaShop.Common.Constants;
 
 namespace HexaShop.Infrastructure.Repositories
 {
@@ -25,7 +26,7 @@ namespace HexaShop.Infrastructure.Repositories
         {
             if (string.IsNullOrWhiteSpace(fileDto.FileExtension))
             {
-                fileDto.FileExtension = ".jpg";
+                fileDto.FileExtension = ImageExtensions.JPG;
             }
 
             if (!IsValidFile(fileDto))

@@ -24,6 +24,10 @@ namespace HexaShop.Application.Dtos.CategoryDtos.Commands.Validations
                 .MaximumLength(200).WithMessage("{PropertyName} must not exceed 200 characters.")
                 .MinimumLength(10).WithMessage("{PropertyName} must larger than 10 characters.");
 
+            RuleFor(ccd => ccd.Image)
+                .NotNull().WithMessage("{PropertyName} can't be null.")
+                .NotEmpty().WithMessage("{PropertyName} can't be empty.");
+
         }
     }
 }

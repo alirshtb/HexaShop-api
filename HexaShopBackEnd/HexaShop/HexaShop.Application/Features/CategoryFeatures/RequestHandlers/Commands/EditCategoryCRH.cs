@@ -5,6 +5,9 @@ using HexaShop.Application.Dtos.CategoryDtos.Commands.Validations;
 using HexaShop.Application.Features.CategoryFeatures.Requests.Commands;
 using HexaShop.Common;
 using HexaShop.Common.CommonDtos;
+using HexaShop.Common.CommonExtenstionMethods;
+using HexaShop.Common.Constants;
+using HexaShop.Common.Dtos;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,6 +15,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Commands
 {
@@ -57,9 +61,32 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Command
                 ResultData = 0
             };
 
+            // --- begin transaction --- //
+            using var transaction = await _unitOfWork.BeginTransactionAsync();
+
+            var savePath = SavePaths.GetSavePath(nameof(category), category.Name, category.Id);
+
+            var fileDto = new FileDto<string>()
+            {
+                Name = request.EditCategoryDto.Name,
+                File = request.EditCategoryDto.Image,
+                FileExtension = ImageExtensions.JPG
+            };
+
+            var imageAddress = UploadImage(fileDto, savePath);
+
+            // --- delete old image --- //
+            _unitOfWork.FileRepository.DeleteFile(category.Image);
+
+            request.EditCategoryDto.Image = imageAddress;
+
             _mapper.Map(request.EditCategoryDto, category);
 
             var updateResult = await _unitOfWork.CategoryRepository.UpdateAsync(category);
+
+            // --- commit trnasaction --- //
+            await _unitOfWork.CommitAsync();
+
 
             return new ResultDto<int>()
             {
@@ -68,5 +95,29 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Command
                 ResultData = updateResult
             };
         }
+
+
+        /// <summary>
+        /// upload image and reutrn image address.
+        /// </summary>
+        /// <param name="fileDto"></param>
+        /// <param name="brach"></param>
+        /// <returns></returns>
+        private string UploadImage(FileDto<string> fileDto, string brach)
+        {
+
+            var uploadProductImageResult = _unitOfWork.FileRepository.UploadImageThroughBase64(fileDto, brach);
+
+            if (!uploadProductImageResult.IsSuccess)
+            {
+                uploadProductImageResult.ThrowException<string>();
+            }
+
+            return uploadProductImageResult.ResultData;
+
+        }
+
+
+
     }
 }

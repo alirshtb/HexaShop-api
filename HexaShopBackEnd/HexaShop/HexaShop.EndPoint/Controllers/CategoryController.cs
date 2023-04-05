@@ -114,7 +114,7 @@ namespace HexaShop.EndPoint.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<GetParentCategoryListDto>>> GetList(GetCategoryListRequestDto getCategoryListRequest)
+        public async Task<IActionResult> GetParentsList([FromBody] GetCategoryListRequestDto getCategoryListRequest)
         {
             try
             {

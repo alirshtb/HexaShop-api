@@ -14,9 +14,9 @@ namespace HexaShop.Common
         /// <param name="productTitle"></param>
         /// <param name="productId"></param>
         /// <returns>save path as string.</returns>
-        public static string GetSaveProductImagePath(string productTitle, int productId)
+        public static string GetSavePath(string entityPath, string productTitle, int productId)
         {
-            return $"Product\\{productTitle}-{productId}";
+            return $"{entityPath.ToUpper()}\\{productTitle.ToUpper()}-{productId}";
         }
 
     }

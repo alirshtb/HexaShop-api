@@ -1,5 +1,9 @@
 ﻿using HexaShop.Application.Constracts.PersistanceContracts;
+using HexaShop.Application.Dtos.CategoryDtos.Queries;
+using HexaShop.Application.Dtos.Common;
+using HexaShop.Application.Features.CategoryFeatures.Requests.Queries;
 using HexaShop.Domain;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,41 +14,31 @@ namespace HexaShop.EndPoint.Controllers
     public class TestController : ControllerBase
     {
 
-        private readonly IUnitOfWork _unitOfWork;
 
-        public TestController(IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
+
+
+        public TestController(IUnitOfWork unitOfWork, IMediator mediator)
         {
             _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> RemoveImages(int id)
+
+
+        [HttpPost]
+        public async Task<IActionResult> GetLatestPost([FromBody] GetListBaseDto getCategoryListRequestDto)
         {
-            await _unitOfWork.ProductRepository.DeletetImages(id);
-            return Ok();
+            //var request = new GetParentCategoryListQR()
+            //{
+            //    GetCategoryList = getCategoryListRequestDto
+            //};
+
+            //var result = _mediator.Send(request);
+
+            return Ok("jhgjhg");
         }
-
-
-        [HttpGet]
-        public async Task<IActionResult> AddImageToProduct(int id)
-        {
-            await _unitOfWork.ProductRepository.AddImages(images: new List<ImageSource>()
-            {
-                new ImageSource()
-                {
-                    Name = "image1",
-                    Address = "address1"
-                },
-                new ImageSource()
-                {
-                    Name = "image2",
-                    Address = "address2"
-                }
-            }, productId: id);
-
-            return Ok();
-        }
-
 
     }
 }

@@ -5,6 +5,9 @@ using HexaShop.Application.Dtos.CategoryDtos.Commands.Validations;
 using HexaShop.Application.Features.CategoryFeatures.Requests.Commands;
 using HexaShop.Common;
 using HexaShop.Common.CommonDtos;
+using HexaShop.Common.CommonExtenstionMethods;
+using HexaShop.Common.Constants;
+using HexaShop.Common.Dtos;
 using HexaShop.Domain;
 using MediatR;
 using System;
@@ -72,6 +75,25 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Command
 
             await _unitOfWork.CategoryRepository.AddAsync(category);
 
+            // --- save image brach path --- //
+            var saveBranch = SavePaths.GetSavePath(nameof(category), category.Name, category.Id);
+
+            #region upload image 
+
+            var fileDto = new FileDto<string>()
+            {
+                File = request.CreateCategoryDto.Image,
+                Name = category.Name + "-" + "Image",
+                FileExtension = ImageExtensions.JPG
+            };
+            var imageAddress = UploadImage(fileDto, saveBranch);
+
+            category.Image = imageAddress;
+
+            await _unitOfWork.CategoryRepository.UpdateAsync(category);
+
+            #endregion upload image
+
             await _unitOfWork.CommitAsync();
 
             return new ResultDto<int>()
@@ -81,5 +103,28 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Command
                 ResultData = category.Id
             };
         }
+
+
+        /// <summary>
+        /// upload image and reutrn image address.
+        /// </summary>
+        /// <param name="fileDto"></param>
+        /// <param name="brach"></param>
+        /// <returns></returns>
+        private string UploadImage(FileDto<string> fileDto, string brach)
+        {
+
+            var uploadProductImageResult = _unitOfWork.FileRepository.UploadImageThroughBase64(fileDto, brach);
+
+            if (!uploadProductImageResult.IsSuccess)
+            {
+                uploadProductImageResult.ThrowException<string>();
+            }
+
+            return uploadProductImageResult.ResultData;
+
+        }
+
     }
+
 }

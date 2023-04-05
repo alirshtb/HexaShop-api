@@ -15,12 +15,15 @@ namespace HexaShop.Application.MappingProfiles
         public CategoryProfile()
         {
             CreateMap<CreateCategoryDto, Category>();
+
             CreateMap<Category, CategoryDto>()
+                .ForMember(dest => dest.Image, _ => _.MapFrom(src => src.Image))
                 .ForMember(dest => dest.Childs, _ => _.MapFrom(src => src.ChildCategories));
 
             CreateMap<EditCategoryDto, Category>();
 
             CreateMap<Category, GetParentCategoryListDto>()
+                .ForMember(dest => dest.Image, _ => _.MapFrom(src => src.Image))
                 .ForMember(dest => dest.ChildCount, _ => _.MapFrom(src => src.ChildCategories.Count()));
 
         }

@@ -35,7 +35,7 @@ namespace HexaShop.Application.Dtos.Common
             }
             set
             {
-                if(value > 0) { _pageNumber = value; }
+                if(value > 0) { _pageNumber = value; } else { _pageNumber = 1; }
             }
         }
         public int PageSize
@@ -46,7 +46,7 @@ namespace HexaShop.Application.Dtos.Common
             }
             set
             {
-                if(value > 0) { _pageSize = value; }
+                if (value > 0) { _pageSize = value; } else { _pageSize = 10; }
             }
         }
         public string? OrderBy
@@ -57,7 +57,7 @@ namespace HexaShop.Application.Dtos.Common
             }
             set
             {
-                OrderBy = !string.IsNullOrWhiteSpace(value) ? value : "id";
+                _orderBy = !string.IsNullOrWhiteSpace(value) ? value : "id";
             }
         }
         public string? OrderDirection
@@ -70,13 +70,6 @@ namespace HexaShop.Application.Dtos.Common
             {
                 _orderDirection = !string.IsNullOrWhiteSpace(value) ? value : "asc";
             }
-        }
-
-        public GetListBaseDto()
-        {
-            PageNumber = 1;
-            PageSize = 10;
-            Search = null;
         }
 
     }

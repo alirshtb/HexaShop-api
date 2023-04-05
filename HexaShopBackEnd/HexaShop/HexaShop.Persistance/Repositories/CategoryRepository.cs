@@ -4,6 +4,7 @@ using HexaShop.Application.Dtos.CategoryDtos.Queries;
 using HexaShop.Common.CommonExtenstionMethods;
 using HexaShop.Common.Dtos;
 using HexaShop.Domain;
+using Microsoft.AspNetCore.Http;
 
 namespace HexaShop.Persistance.Repositories
 {

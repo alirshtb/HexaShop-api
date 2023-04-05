@@ -27,6 +27,9 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
             builder.Property(c => c.ParentCategoryId)
                 .HasDefaultValue(null);
 
+            builder.Property(p => p.Image)
+                .IsRequired();
+
             #region Relations 
 
             builder.HasMany(c => c.Products)

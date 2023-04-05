@@ -5,6 +5,7 @@ using HexaShop.Application.Features.ProductFeatures.Requests.Commands;
 using HexaShop.Common;
 using HexaShop.Common.CommonDtos;
 using HexaShop.Common.CommonExtenstionMethods;
+using HexaShop.Common.Constants;
 using HexaShop.Common.Dtos;
 using HexaShop.Common.Exceptions;
 using HexaShop.Domain;
@@ -81,7 +82,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
 
 
             // --- save image brach path --- //
-            var saveBranch = SavePaths.GetSaveProductImagePath(productTitle: request.EditProductData.Title, productId: product.Id);
+            var saveBranch = SavePaths.GetSavePath(nameof(product), productTitle: request.EditProductData.Title, productId: product.Id);
 
             // --- upload new main image --- //
             var newMainImageAddress = await UploadNewMainImage(request, product, saveBranch);
@@ -170,7 +171,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
             var fileDto = new FileDto<string>()
             {
                 File = request.EditProductData.MainImage,
-                FileExtension = ".jpg",
+                FileExtension = ImageExtensions.JPG,
                 Name = product.Title + "-MainImage"
             };
             var mainImageAddress = UploadProductImages(fileDto, saveBranch);
@@ -197,7 +198,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
                     var fileDto = new FileDto<string>()
                     {
                         File = img.Address,
-                        FileExtension = ".jpg",
+                        FileExtension = ImageExtensions.JPG,
                         Name = img.Name
                     };
 
