@@ -181,6 +181,10 @@
     <value>محصول با موفقیت اضافه شد.</value>
     <comment>Product Added</comment>
   </data>
+  <data name="ProductAddedToCart" xml:space="preserve">
+    <value>محصول باموفقیت به سبد خرید اضافه شد.</value>
+    <comment>Product added into user cart.</comment>
+  </data>
   <data name="ProductEdited" xml:space="preserve">
     <value>محصول با موفقیت ویرایش شد.</value>
     <comment>product edited successfuly.</comment>

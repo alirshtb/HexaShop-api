@@ -32,6 +32,8 @@ namespace HexaShop.Persistance
         public DbSet<Detail> Details { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<ProductInCategory> ProductInCategories { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItems> CartItems { get; set; }
 
         #endregion
 

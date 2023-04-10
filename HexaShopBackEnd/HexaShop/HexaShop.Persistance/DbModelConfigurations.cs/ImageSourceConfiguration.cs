@@ -23,6 +23,9 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
             builder.Property(ims => ims.Address)
                 .IsRequired();
 
+            builder.HasQueryFilter(x => !x.IsDeleted);
+
+
             #region Relations 
 
             builder.HasOne(ims => ims.Product)

@@ -4,6 +4,7 @@ using HexaShop.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HexaShop.Persistance.Migrations
 {
     [DbContext(typeof(HexaShopDbContext))]
-    partial class HexaShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230407144850_AddCartAndCarItemsTbls")]
+    partial class AddCartAndCarItemsTbls
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,6 +225,7 @@ namespace HexaShop.Persistance.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AppUserId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<Guid>("BrowserId")
@@ -239,9 +243,6 @@ namespace HexaShop.Persistance.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -252,7 +253,7 @@ namespace HexaShop.Persistance.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("HexaShop.Domain.CartItems", b =>
@@ -675,7 +676,8 @@ namespace HexaShop.Persistance.Migrations
                     b.HasOne("HexaShop.Domain.AppUser", "User")
                         .WithMany("Cart")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

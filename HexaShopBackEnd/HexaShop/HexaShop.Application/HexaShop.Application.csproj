@@ -16,6 +16,8 @@
     <Folder Include="Dtos\FileDtos\" />
     <Folder Include="Features\AppUserFeatures\RequestHandlers\Queries\" />
     <Folder Include="Features\AppUserFeatures\Requests\Queries\" />
+    <Folder Include="Features\CartFeatures\RequestHandlers\Commands\" />
+    <Folder Include="Features\CartFeatures\RequestHandlers\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

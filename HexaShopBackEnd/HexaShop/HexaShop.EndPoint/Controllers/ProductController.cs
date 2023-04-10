@@ -11,10 +11,12 @@ using HexaShop.Common.CommonExtenstionMethods;
 using HexaShop.Application.Dtos.ProductDtos.Queries;
 using HexaShop.Application.Features.ProductFeatures.Requests.Queries;
 using HexaShop.EndPoint.Models.ViewModels.ProductController;
+using HexaShop.Application.Features.CartFeatures.Requests.Commands;
+using HexaShop.EndPoint.Models.ViewModels.ProductController.Validations;
 
 namespace HexaShop.EndPoint.Controllers
 {
-    [Route("api/[controller]/[action]/")]
+    [Route("api/[controller]/")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -23,7 +25,7 @@ namespace HexaShop.EndPoint.Controllers
         private readonly IMediator _mediator;
 
         public ProductController(IUnitOfWork unitOfWork,
-                                 IMapper mapper, 
+                                 IMapper mapper,
                                  IMediator mediator)
         {
             _unitOfWork = unitOfWork;
@@ -38,7 +40,7 @@ namespace HexaShop.EndPoint.Controllers
         /// <param name="createProductViewModel"></param>
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CreateProductDto createProductDto)
         {
             try
@@ -67,7 +69,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="id">int id</param>
         /// <returns>productDto</returns>
-        [HttpGet("{id}")]
+        [HttpGet("Get/{id}")]
         public async Task<ActionResult<ProductDto>> Get(int id)
         {
             try
@@ -91,14 +93,14 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="getProductListRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("GetList")]
         public async Task<ActionResult<IEnumerable<GetProductListDto>>> GetList([FromBody] GetProductListRequestDto getProductListRequest)
         {
             try
             {
                 var request = new GetProductListQR()
                 {
-                     GetProductListRequest = getProductListRequest
+                    GetProductListRequest = getProductListRequest
                 };
                 var result = await _mediator.Send(request);
 
@@ -118,7 +120,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{id}")]
+        [HttpGet("ChangeActivity/{id}")]
         public async Task<IActionResult> ChangeActivity(int id)
         {
             try
@@ -145,7 +147,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="editProductDto"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("Edit")]
         public async Task<IActionResult> Edit([FromBody] EditProductDto editProductDto)
         {
             try
@@ -169,7 +171,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="getProductListRequest"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("GetLatests")]
         public async Task<ActionResult<IEnumerable<GetProductToShowViewModel>>> GetLatest([FromBody] GetLatedProductListRequestDto getProductListRequest)
         {
             try
@@ -191,6 +193,52 @@ namespace HexaShop.EndPoint.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("productId-{id}/AddToCart")]
+        public async Task<IActionResult> AddToCart([FromBody] AddProductToCartViewModel model)
+        {
+            try
+            {
+                var validator = new AddProductToCartViewModelValidator();
+                var validationResult = validator.Validate(model);
+                if (!validationResult.IsValid)
+                {
+                    throw new InvalidModelStateException(model, validationResult.Errors.FirstOrDefault().ToString());
+                }
+
+                if (!_unitOfWork.CookiesManager.Contains(HttpContext, ConstantValues.BrowserId))
+                {
+                    _unitOfWork.CookiesManager.AddValue(HttpContext, ConstantValues.BrowserId, Guid.NewGuid().ToString());
+                }
+
+                var browserId = _unitOfWork.CookiesManager.GetBrowserId(HttpContext);
+
+                var userId = await _unitOfWork.AppUserRepository.GetCurrentUser(User);
+
+                var request = new AddProductToCartCR()
+                {
+                    BrowserId = browserId,
+                    Count = model.Count,
+                    Price = model.Price,
+                    ProductId = model.ProductId,
+                    UserId = userId,
+                    HttpContext = HttpContext
+                };
+
+                var addProductResult = await _mediator.Send(request);
+
+                addProductResult.ThrowException();
+
+                return Ok(addProductResult.ResultData);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
 
     }
 }

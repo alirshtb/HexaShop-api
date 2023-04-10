@@ -16,6 +16,8 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
             builder.ToTable(nameof(ProductInCategory));
             builder.HasKey(pc => pc.Id);
 
+            
+
             #region Relations
 
             //builder.HasOne(pc => pc.Product)

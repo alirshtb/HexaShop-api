@@ -2,15 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HexaShop.Application.Constracts.PersistanceContracts
 {
-    public interface IAppUserRepository : IGenericRepository<AppUser>
+    public interface ICartItemsRepository : IGenericRepository<CartItems>
     {
-        Task<AppUser> GetAsync(string Email);
-        Task<int?> GetCurrentUser(ClaimsPrincipal user);
     }
 }

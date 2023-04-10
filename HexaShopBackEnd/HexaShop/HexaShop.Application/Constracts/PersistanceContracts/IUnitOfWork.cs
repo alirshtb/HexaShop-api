@@ -29,6 +29,9 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
         public IImageSourceRepository ImageSourceRepository { get; }
         public IFileRepository FileRepository { get; }
         public ICategoryRepository CategoryRepository { get; }
+        public ICookiesManager CookiesManager { get; }
+        public ICartRepository CartRepository { get; }
+        public ICartItemsRepository CartItemsRepository { get; }
 
         #endregion Repositories
 

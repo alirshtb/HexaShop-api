@@ -41,7 +41,9 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
             builder.Property(p => p.IsSpecial)
                 .IsRequired()
                 .HasDefaultValue(false);
-            
+
+
+            builder.HasQueryFilter(x => !x.IsDeleted);
 
             #region Relations 
 
@@ -60,6 +62,11 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
             builder.HasMany(p => p.Categories)
                 .WithOne(c => c.Product)
                 .HasForeignKey(c => c.ProductId)
+                .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
+
+            builder.HasMany(p => p.CartItems)
+                .WithOne(ci => ci.Product)
+                .HasForeignKey(ci => ci.ProductId)
                 .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
 
             #endregion Relations

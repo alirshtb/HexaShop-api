@@ -205,6 +205,15 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to محصول باموفقیت به سبد خرید اضافه شد..
+        /// </summary>
+        public static string ProductAddedToCart {
+            get {
+                return ResourceManager.GetString("ProductAddedToCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to محصول با موفقیت ویرایش شد..
         /// </summary>
         public static string ProductEdited {

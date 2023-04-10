@@ -60,6 +60,17 @@ namespace HexaShop.Persistance.Repositories
         public ICategoryRepository CategoryRepository => _categoryRepository ?? new CategoryRepository(_dbContext);
 
 
+        private readonly ICookiesManager _cookiesManager;
+        public ICookiesManager CookiesManager => _cookiesManager ?? new CookiesManager();
+
+
+        private readonly ICartRepository _cartRepository;
+        public ICartRepository CartRepository => _cartRepository ?? new CartRepository(_dbContext);
+
+
+        private readonly ICartItemsRepository _cartItemsRepository;
+        public ICartItemsRepository CartItemsRepository => _cartItemsRepository ?? new CartItemsRepository(_dbContext);
+
         #endregion Repositories
 
 

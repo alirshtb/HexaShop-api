@@ -18,5 +18,11 @@ namespace HexaShop.Domain
         public string AppIdentityUserId { get; set; }
 
 
+        #region Relations 
+
+        public virtual ICollection<Cart> Cart { get; set; }
+
+        #endregion
+
     }
 }

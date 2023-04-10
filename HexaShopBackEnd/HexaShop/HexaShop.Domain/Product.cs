@@ -24,6 +24,7 @@ namespace HexaShop.Domain
         public virtual ICollection<Detail> Details { get; set; }
         public virtual ICollection<ImageSource> Images { get; set; }
         public virtual ICollection<ProductInCategory> Categories { get; set; }
+        public virtual ICollection<CartItems> CartItems { get; set; }
         #endregion Relations
     }
 }

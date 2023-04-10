@@ -37,7 +37,17 @@ namespace HexaShop.Persistance.DbModelConfigurations
             builder.Property(hu => hu.DateOfBirth)
                    .IsRequired(false);
 
+            builder.HasQueryFilter(x => !x.IsDeleted);
 
+
+            #region Relations 
+
+            builder.HasMany(u => u.Cart)
+                .WithOne(c => c.User)
+                .HasForeignKey(c => c.AppUserId)
+                .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
+
+            #endregion
         }
     }
 }

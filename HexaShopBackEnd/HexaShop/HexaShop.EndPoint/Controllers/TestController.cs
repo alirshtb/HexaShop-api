@@ -6,6 +6,8 @@ using HexaShop.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
+using System.Security.Claims;
 
 namespace HexaShop.EndPoint.Controllers
 {
@@ -27,15 +29,18 @@ namespace HexaShop.EndPoint.Controllers
 
 
 
-        [HttpPost]
-        public async Task<IActionResult> GetLatestPost([FromBody] GetListBaseDto getCategoryListRequestDto)
+        [HttpGet]
+        public async Task<IActionResult> Test()
         {
-            //var request = new GetParentCategoryListQR()
-            //{
-            //    GetCategoryList = getCategoryListRequestDto
-            //};
 
-            //var result = _mediator.Send(request);
+            var claimIdentity = (User.Identity as ClaimsIdentity);
+
+            var userName = claimIdentity.FindFirst("UserName");
+
+            var email = User.Claims.FirstOrDefault(c => c.Type.Contains(JwtRegisteredClaimNames.Email));
+
+            var claim = User.Claims?.FirstOrDefault(c => c.Type.Equals("name", StringComparison.OrdinalIgnoreCase))?.Value;
+
 
             return Ok("jhgjhg");
         }

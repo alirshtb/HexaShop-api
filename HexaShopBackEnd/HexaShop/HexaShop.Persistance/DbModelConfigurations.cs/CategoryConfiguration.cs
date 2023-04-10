@@ -30,6 +30,9 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
             builder.Property(p => p.Image)
                 .IsRequired();
 
+            builder.HasQueryFilter(x => !x.IsDeleted);
+
+
             #region Relations 
 
             builder.HasMany(c => c.Products)

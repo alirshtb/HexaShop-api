@@ -170,6 +170,14 @@ namespace HexaShop.EndPoint.Controllers
                     Password = signInViewModel.Password
                 });
 
+                // --- update User Cart if exists --- //
+                var userId = _unitOfWork.AppUserRepository.GetAsync(user.Email).GetAwaiter().GetResult().Id;
+                var browserId = _unitOfWork.CookiesManager.GetBrowserId(HttpContext);
+                if(browserId != null)
+                {
+                    _unitOfWork.CartRepository.UpdateOnSignIn(browserId, userId);
+                }
+
                 return Ok(requestTokenResult);
             }
             catch (Exception ex)
