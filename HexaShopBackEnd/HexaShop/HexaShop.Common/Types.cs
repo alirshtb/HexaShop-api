@@ -28,4 +28,11 @@ namespace HexaShop.Common
         UnSuccessful = 3,
         InvalidFileExtension = 4
     }
+
+
+    public enum HistoryExceptTables
+    {
+
+    }
+
 }
