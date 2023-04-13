@@ -32,6 +32,11 @@ namespace HexaShop.Common
 
     public enum HistoryExceptTables
     {
+        AppIdentityUser = 0,
+        AppIdentityRole = 1,
+        AppIdentityUserRole = 2,
+        RefereshToken = 3,
+        History = 4,
 
     }
 

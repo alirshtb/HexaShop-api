@@ -38,6 +38,7 @@ namespace HexaShop.Persistance
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItems> CartItems { get; set; }
         public DbSet<History> History { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
 
         #endregion
 
@@ -150,7 +151,7 @@ namespace HexaShop.Persistance
 
             var historiesList = LogChanges(trackedEntities);
 
-            this.SaveChanges();
+            base.SaveChanges();
 
             // --- History = Table Column or Entity Property --- //
             // --- List<List<History>>() = Table or Entity --- //
@@ -168,7 +169,7 @@ namespace HexaShop.Persistance
                 }
             }
 
-            var result = this.SaveChanges();
+            var result = base.SaveChanges();
 
             return result;
         }

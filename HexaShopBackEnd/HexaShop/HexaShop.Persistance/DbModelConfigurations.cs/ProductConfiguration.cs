@@ -69,6 +69,11 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
                 .HasForeignKey(ci => ci.ProductId)
                 .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
 
+            builder.HasOne(p => p.Discount)
+                .WithMany(d => d.Products)
+                .HasForeignKey(p => p.DiscountId)
+                .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
+
             #endregion Relations
         }
     }

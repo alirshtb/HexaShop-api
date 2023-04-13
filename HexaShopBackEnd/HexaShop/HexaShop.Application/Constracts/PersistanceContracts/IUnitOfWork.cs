@@ -32,6 +32,7 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
         public ICookiesManager CookiesManager { get; }
         public ICartRepository CartRepository { get; }
         public ICartItemsRepository CartItemsRepository { get; }
+        public IDiscountRepository DiscountRepository { get; }
 
         #endregion Repositories
 
