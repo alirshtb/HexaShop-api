@@ -21,7 +21,6 @@ namespace HexaShop.Application.Dtos.ProductDtos.Commands
         public List<int> Categories { get; set; }
 
         public long Price { get; set; }
-        public int DiscountId { get; set; }
 
         public string MainImage { get; set; }
         public bool IsSpecial { get; set; }

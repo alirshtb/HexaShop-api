@@ -41,10 +41,6 @@ namespace HexaShop.Application.Dtos.ProductDtos.Commands.Validations
                 .NotNull().WithMessage("{PropertyName} Cann't be Null.")
                 .NotEmpty().WithMessage("{PropertyName} Cann't be Empty.");
 
-            RuleFor(p => p.DiscountId)
-                .NotNull().WithMessage("{PropertyName} Cann't be Null.")
-                .NotEmpty().WithMessage("{PropertyName} Cann't be Empty."); ;
-
             RuleForEach(p => p.Images)
                 .SetValidator(new CreateImageSourceDtoValidator());
 

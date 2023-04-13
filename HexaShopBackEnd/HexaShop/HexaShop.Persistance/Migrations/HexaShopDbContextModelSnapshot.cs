@@ -397,49 +397,6 @@ namespace HexaShop.Persistance.Migrations
                     b.ToTable("Details", (string)null);
                 });
 
-            modelBuilder.Entity("HexaShop.Domain.Discount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Percent")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Discount", (string)null);
-                });
-
             modelBuilder.Entity("HexaShop.Domain.History", b =>
                 {
                     b.Property<string>("Id")
@@ -546,10 +503,6 @@ namespace HexaShop.Persistance.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Description");
 
-                    b.Property<int?>("DiscountId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -589,8 +542,6 @@ namespace HexaShop.Persistance.Migrations
                         .HasColumnName("Title");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DiscountId");
 
                     b.ToTable("Products", (string)null);
                 });
@@ -820,17 +771,6 @@ namespace HexaShop.Persistance.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("HexaShop.Domain.Product", b =>
-                {
-                    b.HasOne("HexaShop.Domain.Discount", "Discount")
-                        .WithMany("Products")
-                        .HasForeignKey("DiscountId")
-                        .OnDelete(DeleteBehavior.ClientNoAction)
-                        .IsRequired();
-
-                    b.Navigation("Discount");
-                });
-
             modelBuilder.Entity("HexaShop.Domain.ProductInCategory", b =>
                 {
                     b.HasOne("HexaShop.Domain.Category", "Category")
@@ -923,11 +863,6 @@ namespace HexaShop.Persistance.Migrations
                 {
                     b.Navigation("ChildCategories");
 
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("HexaShop.Domain.Discount", b =>
-                {
                     b.Navigation("Products");
                 });
 

@@ -46,18 +46,10 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
                 };
             }
 
-            var discount = await _unitOfWork.DiscountRepository.GetAsync(request.CreateProductDto.DiscountId);
-            if (discount == null) return new ResultDto<int>()
-            {
-                IsSuccess = false,
-                Message = ApplicationMessages.DiscountNotFound,
-                Reason = FailureReason.NotFound,
-                ResultData = 0
-            };
-
             #endregion
 
             var product = _mapper.Map<Product>(request.CreateProductDto);
+
 
 
             using var transaction = _unitOfWork.BeginTransaction();
