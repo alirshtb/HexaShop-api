@@ -25,6 +25,10 @@ namespace HexaShop.Domain
         public virtual ICollection<ImageSource> Images { get; set; }
         public virtual ICollection<ProductInCategory> Categories { get; set; }
         public virtual ICollection<CartItems> CartItems { get; set; }
+        
+        public int? DiscountId { get; set; }
+        public virtual Discount Discount { get; set; }
+
         #endregion Relations
     }
 }

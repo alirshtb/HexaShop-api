@@ -71,6 +71,10 @@ namespace HexaShop.Persistance.Repositories
         private readonly ICartItemsRepository _cartItemsRepository;
         public ICartItemsRepository CartItemsRepository => _cartItemsRepository ?? new CartItemsRepository(_dbContext);
 
+
+        private readonly IDiscountRepository _discountRepository;
+        public IDiscountRepository DiscountRepository => _discountRepository ?? new DiscountRepository(_dbContext);
+
         #endregion Repositories
 
 

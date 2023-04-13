@@ -106,6 +106,15 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تخفیف یافت نشد..
+        /// </summary>
+        public static string DiscountNotFound {
+            get {
+                return ResourceManager.GetString("DiscountNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to کاربری با این ایمیل قبلا در دیتا بیس ثبت نام کرده..
         /// </summary>
         public static string DuplicateEmail {

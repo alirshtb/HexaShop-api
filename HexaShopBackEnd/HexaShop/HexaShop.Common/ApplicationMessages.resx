@@ -137,6 +137,10 @@
     <value>{0} {1} شد.</value>
     <comment>change  activity.</comment>
   </data>
+  <data name="DiscountNotFound" xml:space="preserve">
+    <value>تخفیف یافت نشد.</value>
+    <comment>Discount Not Found.</comment>
+  </data>
   <data name="DuplicateEmail" xml:space="preserve">
     <value>کاربری با این ایمیل قبلا در دیتا بیس ثبت نام کرده.</value>
     <comment>Duplicate user Email</comment>
