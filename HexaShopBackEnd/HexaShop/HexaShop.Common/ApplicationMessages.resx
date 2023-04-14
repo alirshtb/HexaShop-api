@@ -141,6 +141,10 @@
     <value>تخفیف جدید اضافه شد.</value>
     <comment>Discount Created Successfuly.</comment>
   </data>
+  <data name="DiscountEdited" xml:space="preserve">
+    <value>تخفیف با موفقیت ویرایش شد.</value>
+    <comment>discount Edited.</comment>
+  </data>
   <data name="DiscountNotFound" xml:space="preserve">
     <value>تخفیف مورد نظر یافت نشد.</value>
     <comment>Dicount Not Found.</comment>
