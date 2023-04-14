@@ -9,5 +9,6 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
 {
     public interface IDiscountRepository : IGenericRepository<Discount>
     {
+        bool IsDuplicate(int percent);
     }
 }

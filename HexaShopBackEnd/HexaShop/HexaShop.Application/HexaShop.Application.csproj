@@ -7,13 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Dtos\FileDtos\**" />
+    <EmbeddedResource Remove="Dtos\FileDtos\**" />
+    <None Remove="Dtos\FileDtos\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HexaShop.Common\HexaShop.Common.csproj" />
     <ProjectReference Include="..\HexaShop.Domain\HexaShop.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Dtos\AppUserDtos\Queries\" />
-    <Folder Include="Dtos\FileDtos\" />
     <Folder Include="Features\AppUserFeatures\RequestHandlers\Queries\" />
     <Folder Include="Features\AppUserFeatures\Requests\Queries\" />
     <Folder Include="Features\CartFeatures\RequestHandlers\Commands\" />

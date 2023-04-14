@@ -22,7 +22,7 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
 
             builder.Property(d => d.Description)
                .IsRequired(true)
-               .HasMaxLength(40);
+               .HasMaxLength(100);
 
             builder.Property(d => d.Percent)
                 .IsRequired(true)

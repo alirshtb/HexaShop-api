@@ -106,11 +106,29 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تخفیف جدید اضافه شد..
+        /// </summary>
+        public static string DiscountCreated {
+            get {
+                return ResourceManager.GetString("DiscountCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تخفیف مورد نظر یافت نشد..
         /// </summary>
         public static string DiscountNotFound {
             get {
                 return ResourceManager.GetString("DiscountNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to قبلا تخفیفی با این درصد ایجاد شده..
+        /// </summary>
+        public static string DuplicateDiscount {
+            get {
+                return ResourceManager.GetString("DuplicateDiscount", resourceCulture);
             }
         }
         

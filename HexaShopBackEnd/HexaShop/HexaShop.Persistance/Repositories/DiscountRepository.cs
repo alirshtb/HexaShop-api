@@ -16,5 +16,15 @@ namespace HexaShop.Persistance.Repositories
         {
             _dbContext = dbContext;
         }
+
+        /// <summary>
+        /// check discount 
+        /// </summary>
+        /// <param name="percent"></param>
+        /// <returns></returns>
+        public bool IsDuplicate(int percent)
+        {
+            return GetAsQueryable().Any(d => d.Percent == percent);
+        }
     }
 }

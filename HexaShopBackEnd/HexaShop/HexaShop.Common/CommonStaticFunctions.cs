@@ -1,5 +1,7 @@
-﻿using HexaShop.Common.CommonDtos;
+﻿using FluentValidation;
+using HexaShop.Common.CommonDtos;
 using HexaShop.Common.Dtos;
+using HexaShop.Common.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -56,5 +58,26 @@ namespace HexaShop.Common
             return lambdaExpression;
         }
 
+        /// <summary>
+        /// validate model
+        /// </summary>
+        /// <typeparam name="TValidator"></typeparam>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="validator"></param>
+        /// <param name="model"></param>
+        /// <exception cref="InvalidModelStateException"></exception>
+        public static void ValidateModel<TValidator, TModel>(TValidator validator, TModel model)
+        {
+            var modelValidator = validator as AbstractValidator<TModel>;
+
+            var validationResult = modelValidator.Validate(model);
+
+            if(!validationResult.IsValid)
+            {
+                throw new InvalidModelStateException(model, validationResult.Errors.FirstOrDefault().ErrorMessage.ToString());
+            }
+
+        }
+        
     }
 }
