@@ -1,6 +1,9 @@
-﻿using HexaShop.Application.Constracts.PersistanceContracts;
+﻿using AutoMapper;
+using HexaShop.Application.Constracts.PersistanceContracts;
 using HexaShop.Application.Dtos.DiscountDtos;
 using HexaShop.Application.Features.DiscountFeatures.Requests.Commands;
+using HexaShop.Application.Features.DiscountFeatures.Requests.Queries;
+using HexaShop.EndPoint.Models.ViewModels.DiscountController;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +15,12 @@ namespace HexaShop.EndPoint.Controllers
     public class DiscountController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public DiscountController(IMediator mediator)
+        public DiscountController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
         
 
@@ -64,6 +69,27 @@ namespace HexaShop.EndPoint.Controllers
 
                 return Ok(result.ResultData);
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet("Get/{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            try
+            {
+                var request = new GetDiscountQR()
+                {
+                    DiscountId = id
+                };
+
+                var result = await _mediator.Send(request);
+
+                return Ok(_mapper.Map<DiscountViewModel>(result));
             }
             catch (Exception ex)
             {

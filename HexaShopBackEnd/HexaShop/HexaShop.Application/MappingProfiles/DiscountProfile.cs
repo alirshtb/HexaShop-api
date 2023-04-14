@@ -14,6 +14,12 @@ namespace HexaShop.Application.MappingProfiles
         public DiscountProfile()
         {
             CreateMap<EditDiscountDto, Discount>();
+
+            CreateMap<Discount, DiscountDto>()
+                .ForMember(dest => dest.Title, _ => _.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Description, _ => _.MapFrom(src => src.Description))
+                .ForMember(dest => dest.Products, _ => _.MapFrom(src => src.Products))
+                .ForMember(dest => dest.Id, _ => _.MapFrom(src => src.Id));
         }
     }
 }

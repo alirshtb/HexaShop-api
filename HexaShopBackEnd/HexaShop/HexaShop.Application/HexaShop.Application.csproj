@@ -8,8 +8,11 @@
 
   <ItemGroup>
     <Compile Remove="Dtos\FileDtos\**" />
+    <Compile Remove="Features\CartFeatures\RequestHandlers\Queries\**" />
     <EmbeddedResource Remove="Dtos\FileDtos\**" />
+    <EmbeddedResource Remove="Features\CartFeatures\RequestHandlers\Queries\**" />
     <None Remove="Dtos\FileDtos\**" />
+    <None Remove="Features\CartFeatures\RequestHandlers\Queries\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +25,6 @@
     <Folder Include="Features\AppUserFeatures\RequestHandlers\Queries\" />
     <Folder Include="Features\AppUserFeatures\Requests\Queries\" />
     <Folder Include="Features\CartFeatures\RequestHandlers\Commands\" />
-    <Folder Include="Features\CartFeatures\RequestHandlers\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
