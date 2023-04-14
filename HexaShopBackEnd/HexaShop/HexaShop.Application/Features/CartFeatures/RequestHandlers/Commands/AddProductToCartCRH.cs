@@ -4,6 +4,7 @@ using HexaShop.Application.Features.CartFeatures.Requests.Commands;
 using HexaShop.Application.Features.CartFeatures.Requests.Validations;
 using HexaShop.Common;
 using HexaShop.Common.CommonDtos;
+using HexaShop.Common.CommonExtenstionMethods;
 using HexaShop.Domain;
 using MediatR;
 using System;
@@ -34,19 +35,7 @@ namespace HexaShop.Application.Features.CartFeatures.RequestHandlers.Commands
         public async Task<ResultDto<int>> Handle(AddProductToCartCR request, CancellationToken cancellationToken)
         {
             var validator = new AddProductToCartCRValidator();
-
-            var validationResult = validator.Validate(request);
-
-            if(!validationResult.IsValid)
-            {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = validationResult.Errors.FirstOrDefault().ToString(),
-                    Reason = Common.FailureReason.InvalidModel,
-                    ResultData = 0
-                };
-            }
+            CommonStaticFunctions.ValidateModel(validator, request);
 
 
             // --- get cart --- //
@@ -82,13 +71,7 @@ namespace HexaShop.Application.Features.CartFeatures.RequestHandlers.Commands
             var product = await _unitOfWork.ProductRepository.GetAsync(request.ProductId);
             if(product == null)
             {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = ApplicationMessages.ProductNotFound,
-                    Reason = FailureReason.NotFound,
-                    ResultData = 0
-                };
+                ExceptionHelpers.ThrowException(ApplicationMessages.ProductNotFound);
             }
 
             cart = await _unitOfWork.CartRepository.GetAsync(cart.Id, includes: cartIncludes);

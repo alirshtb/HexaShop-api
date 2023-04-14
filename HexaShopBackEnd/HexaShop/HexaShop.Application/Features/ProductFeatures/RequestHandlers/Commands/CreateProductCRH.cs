@@ -31,38 +31,17 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
             // --- validate model --- //
             var createProductValidator = new CreateProductDtoValidator();
 
-            var validateResult = await createProductValidator.ValidateAsync(request.CreateProductDto);
-
-            if (!validateResult.IsValid)
-            {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = validateResult.Errors.FirstOrDefault()
-                                                    .ErrorMessage
-                                                    .ToString(),
-                    Reason = FailureReason.InvalidModel,
-                    ResultData = 0
-                };
-            }
+            CommonStaticFunctions.ValidateModel(createProductValidator, request.CreateProductDto);
 
             var discount = await _unitOfWork.DiscountRepository.GetAsync(request.CreateProductDto.DiscountId);
             if(discount == null)
             {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = ApplicationMessages.DiscountNotFound,
-                    Reason = FailureReason.NotFound,
-                    ResultData = 0
-                };
+                ExceptionHelpers.ThrowException(ApplicationMessages.DiscountNotFound);
             }
 
             #endregion
 
             var product = _mapper.Map<Product>(request.CreateProductDto);
-
-
 
             using var transaction = _unitOfWork.BeginTransaction();
 
@@ -125,12 +104,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
 
                 if(category == null)
                 {
-                    return new ResultDto<int>()
-                    {
-                        IsSuccess = false,
-                        Message = ApplicationMessages.CategoryNotFound,
-                        Reason = FailureReason.NotFound,
-                    };
+                    ExceptionHelpers.ThrowException(ApplicationMessages.CategoryNotFound);
                 }
 
                 var productInCategories = new ProductInCategory()
@@ -171,7 +145,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
 
             if (!uploadProductImageResult.IsSuccess)
             {
-                uploadProductImageResult.ThrowException<string>();
+                ExceptionHelpers.ThrowException(uploadProductImageResult.Message);
             }
 
             return uploadProductImageResult.ResultData;

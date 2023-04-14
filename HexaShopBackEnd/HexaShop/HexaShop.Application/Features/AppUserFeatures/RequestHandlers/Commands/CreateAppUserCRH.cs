@@ -25,19 +25,7 @@ namespace HexaShop.Application.Features.AppUserFeatures.RequestHandlers.Commands
         {
             var createValidator = new CreateAppUserDtoValidator();
 
-            var validationResult = await createValidator.ValidateAsync(request.CreateAppUserDto);
-
-            // --- if model state is invlaid --- //
-            if (!validationResult.IsValid)
-            {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    ResultData = 0,
-                    Message = validationResult.Errors.FirstOrDefault().ErrorMessage.ToString(),
-                    Reason = FailureReason.InvalidModel
-                };
-            }
+            CommonStaticFunctions.ValidateModel(createValidator, request.CreateAppUserDto);
 
             var appUser = _mapper.Map<AppUser>(request.CreateAppUserDto);
             appUser.AppIdentityUserId = request.AppIdentityUserId;

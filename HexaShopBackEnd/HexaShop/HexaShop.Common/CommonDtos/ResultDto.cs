@@ -20,7 +20,6 @@ namespace HexaShop.Common.CommonDtos
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }
-        public FailureReason? Reason { get; set; }
     }
 
 }

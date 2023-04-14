@@ -7,7 +7,6 @@ using HexaShop.Common.CommonDtos;
 using HexaShop.Common.CommonExtenstionMethods;
 using HexaShop.Common.Constants;
 using HexaShop.Common.Dtos;
-using HexaShop.Common.Exceptions;
 using HexaShop.Domain;
 using MediatR;
 
@@ -35,17 +34,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
             #region Validations 
             var validator = new EditProductDtoValidator();
 
-            var validationResult = await validator.ValidateAsync(request.EditProductData);
-            if (!validationResult.IsValid)
-            {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = validationResult.Errors.FirstOrDefault().ToString(),
-                    Reason = FailureReason.InvalidModel,
-                    ResultData = 0
-                };
-            }
+            CommonStaticFunctions.ValidateModel(validator, request.EditProductData);
 
             #endregion Validations
 
@@ -59,13 +48,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
             var product = await _unitOfWork.ProductRepository.GetAsync(request.EditProductData.ProductId, includes: includes);
             if (product == null)
             {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = ApplicationMessages.ProductNotFound,
-                    Reason = FailureReason.NotFound,
-                    ResultData = 0
-                };
+                ExceptionHelpers.ThrowException(ApplicationMessages.ProductNotFound);
             }
 
 
@@ -153,7 +136,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
 
             if (!uploadProductImageResult.IsSuccess)
             {
-                uploadProductImageResult.ThrowException<string>();
+                ExceptionHelpers.ThrowException(uploadProductImageResult.Message);
             }
 
             return uploadProductImageResult.ResultData;
@@ -243,7 +226,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
 
                 if (category == null)
                 {
-                    throw new NotFoundException(ApplicationMessages.CategoryNotFound);
+                    ExceptionHelpers.ThrowException(ApplicationMessages.CategoryNotFound);
                 }
 
 

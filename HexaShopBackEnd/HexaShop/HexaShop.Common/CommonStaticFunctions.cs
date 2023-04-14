@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using HexaShop.Common.CommonDtos;
+using HexaShop.Common.CommonExtenstionMethods;
 using HexaShop.Common.Dtos;
-using HexaShop.Common.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,27 +15,6 @@ namespace HexaShop.Common
 {
     public static class CommonStaticFunctions
     {
-
-        /// <summary>
-        /// Retturn ResultDto
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="isSuccessful"></param>
-        /// <param name="message"></param>
-        /// <param name="resultData"></param>
-        /// <param name="reason"></param>
-        /// <returns>a new Instance of ResultDto with ResultData of type T filled with the given data.</returns>
-        public static ResultDto<T> ReturnResult<T> (bool isSuccessful, string message, T resultData, FailureReason? reason = null)
-        {
-            var result = new ResultDto<T> ();
-
-            result.IsSuccess = isSuccessful;
-            result.Message = message;
-            result.Reason = reason;
-            result.ResultData = resultData;
-
-            return result;
-        }
 
         /// <summary>
         /// get lambda expression.
@@ -65,7 +44,7 @@ namespace HexaShop.Common
         /// <typeparam name="TModel"></typeparam>
         /// <param name="validator"></param>
         /// <param name="model"></param>
-        /// <exception cref="InvalidModelStateException"></exception>
+        /// <exception cref="InvalidModelException"></exception>
         public static void ValidateModel<TValidator, TModel>(TValidator validator, TModel model)
         {
             var modelValidator = validator as AbstractValidator<TModel>;
@@ -74,7 +53,7 @@ namespace HexaShop.Common
 
             if(!validationResult.IsValid)
             {
-                throw new InvalidModelStateException(model, validationResult.Errors.FirstOrDefault().ErrorMessage.ToString());
+                ExceptionHelpers.ThrowException(validationResult.Errors.FirstOrDefault().ErrorMessage.ToString(), model);
             }
 
         }

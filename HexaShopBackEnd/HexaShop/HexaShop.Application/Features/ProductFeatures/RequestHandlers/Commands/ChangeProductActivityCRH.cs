@@ -2,6 +2,7 @@
 using HexaShop.Application.Features.ProductFeatures.Requests.Commands;
 using HexaShop.Common;
 using HexaShop.Common.CommonDtos;
+using HexaShop.Common.CommonExtenstionMethods;
 using MediatR;
 
 namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
@@ -27,13 +28,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
 
             if (product == null)
             {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = ApplicationMessages.ProductNotFound,
-                    Reason = FailureReason.NotFound,
-                    ResultData = 0
-                };
+                ExceptionHelpers.ThrowException(ApplicationMessages.ProductNotFound);
             }
 
             product.IsActive = !product.IsActive;

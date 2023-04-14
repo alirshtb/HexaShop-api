@@ -20,16 +20,6 @@ namespace HexaShop.Common
         LastPage = 3,
     }
 
-    public enum FailureReason
-    {
-        Unknown = 0,
-        InvalidModel = 1,
-        NotFound = 2,
-        UnSuccessful = 3,
-        InvalidFileExtension = 4
-    }
-
-
     public enum HistoryExceptTables
     {
         AppIdentityUser = 0,
@@ -37,7 +27,6 @@ namespace HexaShop.Common
         AppIdentityUserRole = 2,
         RefereshToken = 3,
         History = 4,
-
     }
 
 }

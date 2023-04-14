@@ -4,6 +4,7 @@ using HexaShop.Common;
 using Microsoft.AspNetCore.Hosting;
 using HexaShop.Common.Dtos;
 using HexaShop.Common.Constants;
+using HexaShop.Common.CommonExtenstionMethods;
 
 namespace HexaShop.Infrastructure.Repositories
 {
@@ -31,13 +32,7 @@ namespace HexaShop.Infrastructure.Repositories
 
             if (!IsValidFile(fileDto))
             {
-                return new ResultDto<string>()
-                {
-                    IsSuccess = false,
-                    Message = fileDto.FileExtension.ToString(),
-                    ResultData = fileDto.FileExtension.ToString(),
-                    Reason = Common.FailureReason.InvalidFileExtension
-                };
+                ExceptionHelpers.ThrowException(ApplicationMessages.InValidFileExtension);
             }
 
             // --- set base path for images --- //
@@ -50,13 +45,9 @@ namespace HexaShop.Infrastructure.Repositories
 
             // --- special path for every image --- //
             var fileName = DateTime.Now.Ticks.ToString() + "-" + fileDto.Name.ToUpper() + fileDto.FileExtension;
-
-
-  
-            var savePath = Path.Combine(basePath, fileName);
-
             
 
+            var savePath = Path.Combine(basePath, fileName);
 
             try
             {
@@ -80,7 +71,6 @@ namespace HexaShop.Infrastructure.Repositories
                     IsSuccess = false,
                     Message = ApplicationMessages.FailUpload,
                     ResultData = fileDto.FileExtension.ToString(),
-                    Reason = Common.FailureReason.UnSuccessful
                 };
             }
 
@@ -95,13 +85,7 @@ namespace HexaShop.Infrastructure.Repositories
         {
             if(!File.Exists(path))
             {
-                return new ResultDto<string>()
-                {
-                    IsSuccess = false,
-                    Message = ApplicationMessages.FileNotFound,
-                    Reason = FailureReason.NotFound,
-                    ResultData = path
-                };
+                ExceptionHelpers.ThrowException(ApplicationMessages.FileNotFound);
             }
 
             File.Delete(path);

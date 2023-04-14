@@ -36,30 +36,16 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Command
 
             var validator = new EditCategoryDtoValidator();
 
-            var validationResult = await validator.ValidateAsync(request.EditCategoryDto);
-
-            if(!validationResult.IsValid)
-            {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = ApplicationMessages.InValidInformation,
-                    Reason = FailureReason.InvalidModel,
-                    ResultData = 0
-                };
-            }
+            CommonStaticFunctions.ValidateModel(validator, request.EditCategoryDto);
 
             #endregion Validation
 
 
             var category = await _unitOfWork.CategoryRepository.GetAsync(request.EditCategoryDto.Id);
-            if (category == null) return new ResultDto<int>()
+            if (category == null)
             {
-                IsSuccess = false,
-                Message = validationResult.Errors.FirstOrDefault().ToString(),
-                Reason = FailureReason.NotFound,
-                ResultData = 0
-            };
+                ExceptionHelpers.ThrowException(ApplicationMessages.CategoryNotFound);
+            }
 
             // --- begin transaction --- //
             using var transaction = await _unitOfWork.BeginTransactionAsync();
@@ -110,7 +96,7 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Command
 
             if (!uploadProductImageResult.IsSuccess)
             {
-                uploadProductImageResult.ThrowException<string>();
+                ExceptionHelpers.ThrowException(uploadProductImageResult.Message);
             }
 
             return uploadProductImageResult.ResultData;

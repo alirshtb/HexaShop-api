@@ -3,7 +3,7 @@ using HexaShop.Application.Constracts.PersistanceContracts;
 using HexaShop.Application.Dtos.CategoryDtos.Queries;
 using HexaShop.Application.Features.CategoryFeatures.Requests.Queries;
 using HexaShop.Common;
-using HexaShop.Common.Exceptions;
+using HexaShop.Common.CommonExtenstionMethods;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Queries
 
             if(category == null)
             {
-                throw new NotFoundException(ApplicationMessages.CategoryNotFound);
+                ExceptionHelpers.ThrowException(ApplicationMessages.CategoryNotFound);
             }
 
             var categoryDto = _mapper.Map<CategoryDto>(category);

@@ -42,7 +42,7 @@ namespace HexaShop.EndPoint.Controllers
 
                 if (!createCategoryResult.IsSuccess)
                 {
-                    createCategoryResult.ThrowException<int>();
+                    ExceptionHelpers.ThrowException(createCategoryResult.Message);
                 }
 
                 return CreatedAtAction("Get", controllerName: "Category", routeValues: new { id = createCategoryResult.ResultData }, value: null);

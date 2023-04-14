@@ -1,5 +1,4 @@
 ﻿using HexaShop.ApiEndPoint.Models.Dtos.IdentityDtos;
-using HexaShop.Common.Exceptions;
 using HexaShop.Common;
 using HexaShop.EndPoint.Models.ViewModels.AccountController;
 using Microsoft.AspNetCore.Http;
@@ -59,7 +58,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="signUpViewModel"></param>
         /// <returns></returns>
-        /// <exception cref="InvalidModelStateException"></exception>
+        /// <exception cref="InvalidModelException"></exception>
         [HttpPost]
         public async Task<ActionResult<RequestTokenResultDto>> SignUp([FromBody] SignUpViewModel signUpViewModel)
         {
@@ -67,7 +66,7 @@ namespace HexaShop.EndPoint.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    throw new InvalidModelStateException(signUpViewModel, ApplicationMessages.InValidInformation);
+                    ExceptionHelpers.ThrowException(ApplicationMessages.InValidInformation, signUpViewModel);
                 }
 
                 // --- if user with current email doesn't exists --- //
@@ -85,8 +84,6 @@ namespace HexaShop.EndPoint.Controllers
                     // --- if hexa identity user creation is succeeded --- //
                     var createHexaUserResult = await CreateAppUser(signUpViewModel);
 
-                    // --- return result --- //
-                    createHexaUserResult.ThrowException<int>();
 
                     // --- request token for user --- //
                     var requestTokenResult = _jwtService.CreateTokenAsync(new RequestTokenDto()
@@ -110,8 +107,6 @@ namespace HexaShop.EndPoint.Controllers
 
                     var createHexaUserResult = await CreateAppUser(signUpViewModel);
 
-                    // --- return result --- //
-                    createHexaUserResult.ThrowException<int>();
 
                     // --- request token for user --- //
                     var requestTokenResult = await _jwtService.CreateTokenAsync(new RequestTokenDto()
@@ -147,7 +142,7 @@ namespace HexaShop.EndPoint.Controllers
 
                 if (user == null)
                 {
-                    throw new NotFoundException(ApplicationMessages.InValidInformation);
+                    ExceptionHelpers.ThrowException(ApplicationMessages.InValidInformation);
                 }
 
                 if (!user.IsActive)
@@ -157,7 +152,7 @@ namespace HexaShop.EndPoint.Controllers
 
                 if (!await IsUserPasswordCurrect(user, signInViewModel.Password))
                 {
-                    throw new InvalidModelStateException(signInViewModel, ApplicationMessages.InValidInformation);
+                    ExceptionHelpers.ThrowException(ApplicationMessages.InValidInformation, signInViewModel);
                 }
 
                 await _signInManager.SignInAsync(user, signInViewModel.RememberMe);
@@ -201,7 +196,7 @@ namespace HexaShop.EndPoint.Controllers
                 var appIdentityUser = await _userManager.FindByIdAsync(id);
                 if (appIdentityUser == null)
                 {
-                    throw new NotFoundException(ApplicationMessages.UserNotFound);
+                    ExceptionHelpers.ThrowException(ApplicationMessages.UserNotFound);
                 }
 
                 appIdentityUser.IsActive = !appIdentityUser.IsActive;

@@ -3,7 +3,7 @@ using HexaShop.Application.Constracts.PersistanceContracts;
 using HexaShop.Application.Dtos.ProductDtos.Queries;
 using HexaShop.Application.Features.ProductFeatures.Requests.Queries;
 using HexaShop.Common;
-using HexaShop.Common.Exceptions;
+using HexaShop.Common.CommonExtenstionMethods;
 using MediatR;
 
 namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Queries
@@ -32,7 +32,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Queries
 
             if(product == null)
             {
-                throw new NotFoundException(ApplicationMessages.ProductNotFound);
+                ExceptionHelpers.ThrowException(ApplicationMessages.ProductNotFound);
             }
 
             var productDto = _mapper.Map<ProductDto>(product);

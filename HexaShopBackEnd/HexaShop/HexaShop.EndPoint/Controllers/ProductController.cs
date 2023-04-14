@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using HexaShop.Application.Constracts.PersistanceContracts;
 using HexaShop.Application.Dtos.ProductDtos.Commands;
-using HexaShop.Common.Exceptions;
 using HexaShop.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -53,7 +52,6 @@ namespace HexaShop.EndPoint.Controllers
 
                 var createProductResult = await _mediator.Send(createProductCommandRequest);
 
-                createProductResult.ThrowException<int>();
 
                 return CreatedAtAction("Get", controllerName: "Product", routeValues: new { id = createProductResult.ResultData }, value: null);
             }
@@ -132,7 +130,6 @@ namespace HexaShop.EndPoint.Controllers
 
                 var result = await _mediator.Send(request);
 
-                result.ThrowException<int>();
 
                 return Ok(result.Message);
             }
@@ -194,6 +191,11 @@ namespace HexaShop.EndPoint.Controllers
             }
         }
 
+        /// <summary>
+        /// add product to cart.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("productId-{id}/AddToCart")]
         public async Task<IActionResult> AddToCart([FromBody] AddProductToCartViewModel model)
         {
@@ -203,7 +205,7 @@ namespace HexaShop.EndPoint.Controllers
                 var validationResult = validator.Validate(model);
                 if (!validationResult.IsValid)
                 {
-                    throw new InvalidModelStateException(model, validationResult.Errors.FirstOrDefault().ToString());
+                    ExceptionHelpers.ThrowException(validationResult.Errors.FirstOrDefault().ToString(), model);
                 }
 
                 if (!_unitOfWork.CookiesManager.Contains(HttpContext, ConstantValues.BrowserId))
@@ -226,8 +228,6 @@ namespace HexaShop.EndPoint.Controllers
                 };
 
                 var addProductResult = await _mediator.Send(request);
-
-                addProductResult.ThrowException();
 
                 return Ok(addProductResult.ResultData);
 

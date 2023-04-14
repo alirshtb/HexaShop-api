@@ -1,5 +1,5 @@
 ﻿using HexaShop.Common.CommonDtos;
-using HexaShop.Common.Exceptions;
+using HexaShop.Common.CustomeExceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,33 +10,28 @@ namespace HexaShop.Common.CommonExtenstionMethods
 {
     public static class ExceptionHelpers
     {
+
         /// <summary>
-        /// throw exception accounrding to the ResultDto.Reason
+        /// throw normal exception.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <exception cref="Exception"></exception>
+        public static void ThrowException(string message)
+        {
+            throw new Exception(message);
+        }
+
+        /// <summary>
+        /// throw invalid model exception.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="resultDto"></param>
-        /// <exception cref="NotFoundException"></exception>
-        /// <exception cref="InvalidModelStateException"></exception>
-        public static void ThrowException<T>(this ResultDto<T> resultDto)
+        /// <param name="message"></param>
+        /// <param name="model"></param>
+        /// <exception cref="InvalidModelException"></exception>
+        public static void ThrowException<T>(string message, T model)
         {
-            if (resultDto.IsSuccess)
-            {
-                return;
-            }
-
-            var reason = resultDto.Reason;
-
-            switch (reason)
-            {
-                case FailureReason.NotFound:
-                    throw new NotFoundException(resultDto.Message);
-                case FailureReason.InvalidModel:
-                    throw new InvalidModelStateException(resultDto.ResultData, resultDto.Message);
-                case FailureReason.UnSuccessful:
-                    throw new UnSuccessfulException(resultDto.Message);
-                case FailureReason.InvalidFileExtension:
-                    throw new InvalidFileExtensionException(resultDto.Message);
-            }
+            throw new InvalidModelException($"Message = {message} - Model = {model}");
         }
+
     }
 }

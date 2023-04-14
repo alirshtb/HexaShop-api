@@ -38,33 +38,13 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Command
         public async Task<ResultDto<int>> Handle(CreateCategoryCR request, CancellationToken cancellationToken)
         {
             var createCategoryDtoValidator = new CreateCategoryDtoValidator();
-            var validationResult = createCategoryDtoValidator.Validate(request.CreateCategoryDto);
-
-            if (!validationResult.IsValid)
-            {
-                return new ResultDto<int>()
-                {
-                    IsSuccess = false,
-                    Message = validationResult.Errors.FirstOrDefault().ErrorMessage,
-                    Reason = FailureReason.InvalidModel,
-                    ResultData = 0
-                };
-            }
+            CommonStaticFunctions.ValidateModel(createCategoryDtoValidator, request.CreateCategoryDto);
 
             // --- validate parent category --- //
             if(request.CreateCategoryDto.ParentCategoryId.HasValue)
             {
                 var parentCategory = await _unitOfWork.CategoryRepository.GetAsync(request.CreateCategoryDto.ParentCategoryId.Value);
-                if (parentCategory == null)
-                {
-                    return new ResultDto<int>()
-                    {
-                        IsSuccess = false,
-                        Message = ApplicationMessages.ParentCategoryNotFound,
-                        Reason = FailureReason.InvalidModel,
-                        ResultData = 0
-                    };
-                }
+                ExceptionHelpers.ThrowException(ApplicationMessages.ParentCategoryNotFound);
             }
 
 
@@ -118,7 +98,7 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Command
 
             if (!uploadProductImageResult.IsSuccess)
             {
-                uploadProductImageResult.ThrowException<string>();
+                ExceptionHelpers.ThrowException(uploadProductImageResult.Message);
             }
 
             return uploadProductImageResult.ResultData;
