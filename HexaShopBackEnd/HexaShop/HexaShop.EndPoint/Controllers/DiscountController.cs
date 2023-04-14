@@ -44,5 +44,32 @@ namespace HexaShop.EndPoint.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        /// <summary>
+        /// edit discount.
+        /// </summary>
+        /// <param name="editDiscountDto"></param>
+        /// <returns></returns>
+        [HttpPost("Edit")]
+        public async Task<IActionResult> Edit([FromBody] EditDiscountDto editDiscountDto)
+        {
+            try
+            {
+                var request = new EditDiscountCR()
+                {
+                    EditDiscountDto = editDiscountDto
+                };
+
+                var result = await _mediator.Send(request);
+
+                return Ok(result.ResultData);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

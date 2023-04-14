@@ -115,6 +115,15 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تخفیف با موفقیت ویرایش شد..
+        /// </summary>
+        public static string DiscountEdited {
+            get {
+                return ResourceManager.GetString("DiscountEdited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تخفیف مورد نظر یافت نشد..
         /// </summary>
         public static string DiscountNotFound {
