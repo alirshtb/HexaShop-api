@@ -8,5 +8,6 @@ namespace HexaShop.Application.Features.CategoryFeatures.Requests.Queries
     public class GetParentCategoryListQR : IRequest<GetListResultDto<GetParentCategoryListDto>>
     {
         public GetCategoryListRequestDto GetCategoryList { get; set; }
+        public GetCategoryListRequestDto GetCategoryListRequest { get; set; }
     }
 }

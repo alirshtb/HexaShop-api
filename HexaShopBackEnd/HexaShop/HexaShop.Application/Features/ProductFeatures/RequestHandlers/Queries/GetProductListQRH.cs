@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HexaShop.Application.Constracts.PersistanceContracts;
+using HexaShop.Application.Dtos.DiscountDtos;
 using HexaShop.Application.Dtos.ProductDtos.Queries;
 using HexaShop.Application.Features.ProductFeatures.Requests.Queries;
 using HexaShop.Common;

@@ -1,4 +1,5 @@
-﻿using HexaShop.Application.Dtos.ProductDtos.Queries;
+﻿using HexaShop.Application.Dtos.DiscountDtos;
+using HexaShop.Application.Dtos.ProductDtos.Queries;
 using HexaShop.Common.Dtos;
 using MediatR;
 using System;

@@ -20,7 +20,15 @@ namespace HexaShop.Application.Dtos.Common
         {
             get
             {
-                return _search == null ? null : _search.ToLower();
+                //return _search == null ? null : _search.ToLower();
+                if(string.IsNullOrWhiteSpace(_search))
+                {
+                    return null;
+                }
+                else
+                {
+                    return _search.ToLower();
+                }
             }
             set
             {
@@ -53,7 +61,15 @@ namespace HexaShop.Application.Dtos.Common
         {
             get
             {
-                return !string.IsNullOrWhiteSpace(_orderBy) ? _orderBy : "id";
+                //return !string.IsNullOrWhiteSpace(_orderBy) ? _orderBy : "id";
+                if(string.IsNullOrWhiteSpace(_orderBy))
+                {
+                    return "id";
+                }
+                else
+                {
+                    return _orderBy;
+                }
             }
             set
             {
@@ -64,7 +80,15 @@ namespace HexaShop.Application.Dtos.Common
         {
             get
             {
-                return !string.IsNullOrWhiteSpace(_orderDirection) ? _orderDirection : "asc";
+                //return !string.IsNullOrWhiteSpace(_orderDirection) ? _orderDirection : "asc";
+                if(string.IsNullOrWhiteSpace(_orderDirection))
+                {
+                    return "asc";
+                }
+                else
+                {
+                    return _orderDirection;
+                }
             }
             set
             {

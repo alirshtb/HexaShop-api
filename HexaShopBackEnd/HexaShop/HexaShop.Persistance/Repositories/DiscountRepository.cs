@@ -17,6 +17,21 @@ namespace HexaShop.Persistance.Repositories
             _dbContext = dbContext;
         }
 
+
+        /// <summary>
+        /// get all product as queryable.
+        /// </summary>
+        /// <param name="includes"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public IQueryable<Discount> GetAllAsQueryable(List<string> includes = null)
+        {
+            var discounts = GetAsQueryable(includes);
+
+            return discounts;
+
+        }
+
         /// <summary>
         /// check discount 
         /// </summary>

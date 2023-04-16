@@ -76,7 +76,11 @@ namespace HexaShop.EndPoint.Controllers
             }
         }
 
-
+        /// <summary>
+        /// get Discount detail.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("Get/{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -90,6 +94,36 @@ namespace HexaShop.EndPoint.Controllers
                 var result = await _mediator.Send(request);
 
                 return Ok(_mapper.Map<DiscountViewModel>(result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// get discounts List
+        /// </summary>
+        /// <param name="getDiscountListRequestDto"></param>
+        /// <returns></returns>
+        [HttpPost("GetList")]
+        public async Task<IActionResult> GetList([FromBody] GetDiscountListRequestDto getDiscountListRequestDto)
+        {
+            try
+            {
+                var request = new GetDiscountListQR()
+                {
+                    GetDiscountListRequest = getDiscountListRequestDto
+                };
+
+                var result = await _mediator.Send(request);
+
+                var discounts = _mapper.Map<List<DiscountViewModel>>(result.Values);
+
+                Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(result.MetaData));
+
+                return Ok(discounts);
+
             }
             catch (Exception ex)
             {
