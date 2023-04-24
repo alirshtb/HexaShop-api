@@ -70,6 +70,15 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سبد خریدی وجود ندارد..
+        /// </summary>
+        public static string CartNotFound {
+            get {
+                return ResourceManager.GetString("CartNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to دسته بندی با موفقیت اضافه شد..
         /// </summary>
         public static string CategoryAdded {
@@ -219,6 +228,33 @@ namespace HexaShop.Common {
         public static string MainImageIsMoreThanOne {
             get {
                 return ResourceManager.GetString("MainImageIsMoreThanOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to کاربر وارد شده ای یافت نشد.
+        /// </summary>
+        public static string NoSignedInUserFound {
+            get {
+                return ResourceManager.GetString("NoSignedInUserFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سفارش ثبت شد.
+        /// </summary>
+        public static string OrderCreated {
+            get {
+                return ResourceManager.GetString("OrderCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to در انتظار پرداخت..
+        /// </summary>
+        public static string OrderPaymentLevel {
+            get {
+                return ResourceManager.GetString("OrderPaymentLevel", resourceCulture);
             }
         }
         

@@ -34,7 +34,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
             CommonStaticFunctions.ValidateModel(createProductValidator, request.CreateProductDto);
 
             var discount = await _unitOfWork.DiscountRepository.GetAsync(request.CreateProductDto.DiscountId);
-            if(discount == null)
+            if (discount == null)
             {
                 ExceptionHelpers.ThrowException(ApplicationMessages.DiscountNotFound);
             }
@@ -45,90 +45,100 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Commands
 
             using var transaction = _unitOfWork.BeginTransaction();
 
-            // --- create product and return new prduct id --- //
-            _unitOfWork.ProductRepository.Add(product);
-
-            // --- save image brach path --- //
-            var saveBranch = SavePaths.GetSavePath("Product", productTitle: request.CreateProductDto.Title, productId: product.Id);
-
-
-            // --- Upload product main image and get image source url and set to product before creating new product --- //
-            #region upload main image and update product 
-            var fileDto = new FileDto<string>()
+            try
             {
-                File = request.CreateProductDto.MainImage,
-                FileExtension = ImageExtensions.JPG,
-                Name = product.Title + "-MainImage"
-            };
-            var mainImageAddress = UploadProductImages(fileDto, saveBranch);
 
-            product.MainImage = mainImageAddress;
+                // --- create product and return new prduct id --- //
+                _unitOfWork.ProductRepository.Add(product);
 
+                // --- save image brach path --- //
+                var saveBranch = SavePaths.GetSavePath("Product", productTitle: request.CreateProductDto.Title, productId: product.Id);
 
 
-            #endregion
-
-            // --- upload images and update images address --- //
-            #region Upload Images 
-            if (request.CreateProductDto.Images.Count > 0)
-            {
-                request.CreateProductDto.Images.ForEach(img =>
+                // --- Upload product main image and get image source url and set to product before creating new product --- //
+                #region upload main image and update product 
+                var fileDto = new FileDto<string>()
                 {
-                    var fileDto = new FileDto<string>()
-                    {
-                        File = img.Address,
-                        FileExtension = ImageExtensions.JPG,
-                        Name = img.Name
-                    };
+                    File = request.CreateProductDto.MainImage,
+                    FileExtension = ImageExtensions.JPG,
+                    Name = product.Title + "-MainImage"
+                };
+                var mainImageAddress = UploadProductImages(fileDto, saveBranch);
 
-                    var imageAddress = UploadProductImages(fileDto, saveBranch);
+                product.MainImage = mainImageAddress;
 
-                    product.Images.Where(i => i.Address == img.Address).ToList().ForEach(imgFile =>
+
+
+                #endregion
+
+                // --- upload images and update images address --- //
+                #region Upload Images 
+                if (request.CreateProductDto.Images.Count > 0)
+                {
+                    request.CreateProductDto.Images.ForEach(img =>
                     {
-                        imgFile.Address = imageAddress;
+                        var fileDto = new FileDto<string>()
+                        {
+                            File = img.Address,
+                            FileExtension = ImageExtensions.JPG,
+                            Name = img.Name
+                        };
+
+                        var imageAddress = UploadProductImages(fileDto, saveBranch);
+
+                        product.Images.Where(i => i.Address == img.Address).ToList().ForEach(imgFile =>
+                        {
+                            imgFile.Address = imageAddress;
+                        });
+
                     });
+                }
+                #endregion Upload Images
 
-                });
-            }
-            #endregion Upload Images
+                // --- add product to category --- //
+                #region Add Categories 
 
-            // --- add product to category --- //
-            #region Add Categories 
-
-            foreach (var categoryId in request.CreateProductDto.Categories)
-            {
-                var category = await _unitOfWork.CategoryRepository.GetAsync(categoryId, includes: new List<string>()
+                foreach (var categoryId in request.CreateProductDto.Categories)
+                {
+                    var category = await _unitOfWork.CategoryRepository.GetAsync(categoryId, includes: new List<string>()
                 {
                     "Products"
                 });
 
-                if(category == null)
-                {
-                    ExceptionHelpers.ThrowException(ApplicationMessages.CategoryNotFound);
+                    if (category == null)
+                    {
+                        ExceptionHelpers.ThrowException(ApplicationMessages.CategoryNotFound);
+                    }
+
+                    var productInCategories = new ProductInCategory()
+                    {
+                        ProductId = product.Id,
+                        CategoryId = category.Id
+                    };
+
+                    category.Products.Add(productInCategories);
                 }
 
-                var productInCategories = new ProductInCategory()
-                {
-                    ProductId = product.Id,
-                    CategoryId = category.Id
-                };
+                #endregion
 
-                category.Products.Add(productInCategories);
+
+                _unitOfWork.ProductRepository.Update(product);
+                _unitOfWork.Commit();
+
+
+                return new ResultDto<int>()
+                {
+                    IsSuccess = true,
+                    Message = ApplicationMessages.ProductAdded,
+                    ResultData = product.Id
+                };
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                throw;
             }
 
-            #endregion
-
-
-            _unitOfWork.ProductRepository.Update(product);
-            _unitOfWork.Commit();
-
-
-            return new ResultDto<int>()
-            {
-                IsSuccess = true,
-                Message = ApplicationMessages.ProductAdded,
-                ResultData = product.Id
-            };
         }
 
         /// <summary>

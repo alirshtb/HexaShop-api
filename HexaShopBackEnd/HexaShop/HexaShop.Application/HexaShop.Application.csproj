@@ -25,6 +25,9 @@
     <Folder Include="Features\AppUserFeatures\RequestHandlers\Queries\" />
     <Folder Include="Features\AppUserFeatures\Requests\Queries\" />
     <Folder Include="Features\CartFeatures\RequestHandlers\Commands\" />
+    <Folder Include="Features\PaymentFeatures\" />
+    <Folder Include="Features\OrderFeatures\RequestHandlers\Queries\" />
+    <Folder Include="Features\OrderFeatures\Requests\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

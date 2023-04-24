@@ -8,7 +8,13 @@ namespace HexaShop.Common
 {
     public enum Gender
     {
+        /// <summary>
+        /// مذکر
+        /// </summary>
         Male = 0,
+        /// <summary>
+        /// مونث
+        /// </summary>
         Female = 1
     }
     
@@ -27,6 +33,47 @@ namespace HexaShop.Common
         AppIdentityUserRole = 2,
         RefereshToken = 3,
         History = 4,
+    }
+
+
+    public enum OrderProgressLevel
+    {
+        /// <summary>
+        /// در انتظار پرداخت
+        /// </summary>
+        Payment = 0,
+        /// <summary>
+        /// در اناظار تایید مدیر
+        /// </summary>
+        WaitToConfirm = 1,
+        /// <summary>
+        /// تایید شده
+        /// </summary>
+        Confirmed = 2,
+        /// <summary>
+        /// رد شده
+        /// </summary>
+        Rejected = 3,
+        /// <summary>
+        /// در حال بسته بندی
+        /// </summary>
+        Packaging = 4,
+        /// <summary>
+        /// آماده سازی برای ارسال
+        /// </summary>
+        PrePairngToSend = 5,
+        /// <summary>
+        /// ارسال
+        /// </summary>
+        Delivery = 6,
+        /// <summary>
+        /// تحویل داده شده
+        /// </summary>
+        RecievedByCustomer = 7, 
+        /// <summary>
+        /// کنسل شده
+        /// </summary>
+        Cancelled = 15
     }
 
 }

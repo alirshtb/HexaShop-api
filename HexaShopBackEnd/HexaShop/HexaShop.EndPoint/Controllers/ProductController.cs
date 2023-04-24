@@ -215,7 +215,7 @@ namespace HexaShop.EndPoint.Controllers
 
                 var browserId = _unitOfWork.CookiesManager.GetBrowserId(HttpContext);
 
-                var userId = await _unitOfWork.AppUserRepository.GetCurrentUser(User);
+                var userId = await _unitOfWork.AppUserRepository.GetCurrentUserId(User);
 
                 var request = new AddProductToCartCR()
                 {

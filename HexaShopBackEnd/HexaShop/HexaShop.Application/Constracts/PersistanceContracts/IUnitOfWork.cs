@@ -33,6 +33,8 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
         public ICartRepository CartRepository { get; }
         public ICartItemsRepository CartItemsRepository { get; }
         public IDiscountRepository DiscountRepository { get; }
+        public IPaymentRepository PaymentRepository { get; }
+        public IOrderRepository OrderRepository { get; }
 
         #endregion Repositories
 

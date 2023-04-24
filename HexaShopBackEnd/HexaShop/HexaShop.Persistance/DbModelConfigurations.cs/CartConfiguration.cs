@@ -25,7 +25,6 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
 
             builder.HasMany(c => c.Items)
                 .WithOne(i => i.Cart)
-                .HasForeignKey(i => i.CartId)
                 .OnDelete(DeleteBehavior.ClientCascade);
 
             builder.HasOne(c => c.User)

@@ -32,7 +32,6 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
 
             builder.HasMany(d => d.Products)
                 .WithOne(p => p.Discount)
-                .HasForeignKey(p => p.DiscountId)
                 .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
 
             #endregion

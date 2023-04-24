@@ -49,24 +49,20 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
 
             builder.HasMany(p => p.Details)
                 .WithOne(d => d.Product)
-                .HasForeignKey(p => p.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
 
             builder.HasMany(p => p.Images)
                 .WithOne(ims => ims.Product)
-                .HasForeignKey(ims => ims.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
 
             builder.HasMany(p => p.Categories)
                 .WithOne(c => c.Product)
-                .HasForeignKey(c => c.ProductId)
                 .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
 
             builder.HasMany(p => p.CartItems)
                 .WithOne(ci => ci.Product)
-                .HasForeignKey(ci => ci.ProductId)
                 .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
 
             builder.HasOne(p => p.Discount)

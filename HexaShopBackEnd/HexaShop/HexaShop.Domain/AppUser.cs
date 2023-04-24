@@ -22,6 +22,9 @@ namespace HexaShop.Domain
 
         public virtual ICollection<Cart> Cart { get; set; }
 
+        public virtual ICollection<Order> Orders { get; set; }
+
+
         #endregion
 
     }

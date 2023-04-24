@@ -121,6 +121,10 @@
     <value>شما اجازه دسترسی به این صفحه را ندارید.</value>
     <comment>Access Denied</comment>
   </data>
+  <data name="CartNotFound" xml:space="preserve">
+    <value>سبد خریدی وجود ندارد.</value>
+    <comment>Cart Not Found.</comment>
+  </data>
   <data name="CategoryAdded" xml:space="preserve">
     <value>دسته بندی با موفقیت اضافه شد.</value>
     <comment>Category Added Successfuly.</comment>
@@ -188,6 +192,18 @@
   <data name="MainImageIsMoreThanOne" xml:space="preserve">
     <value>تعداد عکس های اصلی یک محصول نمی تواند از یک عدد بیشتر باشد.</value>
     <comment>Product Main Images Is More than One</comment>
+  </data>
+  <data name="NoSignedInUserFound" xml:space="preserve">
+    <value>کاربر وارد شده ای یافت نشد</value>
+    <comment>no signed in user found.</comment>
+  </data>
+  <data name="OrderCreated" xml:space="preserve">
+    <value>سفارش ثبت شد</value>
+    <comment>Order Created.</comment>
+  </data>
+  <data name="OrderPaymentLevel" xml:space="preserve">
+    <value>در انتظار پرداخت.</value>
+    <comment>Order Payment Level.</comment>
   </data>
   <data name="ParentCategoryNotFound" xml:space="preserve">
     <value>دسته بندی والد یاقت نشد.</value>

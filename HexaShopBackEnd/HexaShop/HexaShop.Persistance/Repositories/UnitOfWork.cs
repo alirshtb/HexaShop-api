@@ -75,6 +75,14 @@ namespace HexaShop.Persistance.Repositories
         private readonly IDiscountRepository _discountRepository;
         public IDiscountRepository DiscountRepository => _discountRepository ?? new DiscountRepository(_dbContext);
 
+
+        private readonly IPaymentRepository _paymentRepository;
+        public IPaymentRepository PaymentRepository => _paymentRepository ?? new PaymentRepository(_dbContext);
+
+
+        private readonly IOrderRepository _orderRepository;
+        public IOrderRepository OrderRepository => _orderRepository ?? new OrderRepository(_dbContext);
+
         #endregion Repositories
 
 

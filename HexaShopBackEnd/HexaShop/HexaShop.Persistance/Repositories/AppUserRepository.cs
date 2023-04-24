@@ -39,7 +39,7 @@ namespace HexaShop.Persistance.Repositories
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public async Task<int?> GetCurrentUser(ClaimsPrincipal user)
+        public async Task<int?> GetCurrentUserId(ClaimsPrincipal user)
         {
             if(!user.Identity.IsAuthenticated)
             {

@@ -37,18 +37,8 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
 
             builder.HasMany(c => c.Products)
                 .WithOne(p => p.Category)
-                .HasForeignKey(p => p.CategoryId)
                 .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
 
-            //builder.HasMany(c => c.ChildCategories)
-            //    .WithOne(chc => chc.ParentCategory)
-            //    .HasForeignKey(chc => chc.ParentCategoryId)
-            //    .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
-
-            //builder.HasOne(chc => chc.ParentCategory)
-            //    .WithMany(c => c.ChildCategories)
-            //    .HasForeignKey(chc => chc.ParentCategoryId)
-            //    .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
 
             #endregion Relations
 

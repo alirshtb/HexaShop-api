@@ -39,6 +39,7 @@ namespace HexaShop.Persistance
         public DbSet<CartItems> CartItems { get; set; }
         public DbSet<History> History { get; set; }
         public DbSet<Discount> Discounts { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         #endregion
 

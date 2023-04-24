@@ -19,7 +19,6 @@ namespace HexaShop.Persistance.DbModelConfigurations
 
             builder.HasMany(r => r.Users)
                 .WithOne()
-                .HasForeignKey(hiur => hiur.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 

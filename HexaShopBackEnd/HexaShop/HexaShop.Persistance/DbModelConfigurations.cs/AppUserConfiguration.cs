@@ -44,7 +44,10 @@ namespace HexaShop.Persistance.DbModelConfigurations
 
             builder.HasMany(u => u.Cart)
                 .WithOne(c => c.User)
-                .HasForeignKey(c => c.AppUserId)
+                .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
+
+            builder.HasMany(u => u.Orders)
+                .WithOne(o => o.AppUser)
                 .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
 
             #endregion
