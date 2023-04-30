@@ -8,16 +8,13 @@ using System.Threading.Tasks;
 
 namespace HexaShop.Persistance.Repositories
 {
-    public class OrderRepository : GenericRepository<Order>, IOrderRepository
+    public class OrderDetailRepository : GenericRepository<OrderDetails>, IOrderDetailRepository
     {
         private readonly HexaShopDbContext _dbContext;
 
-        public OrderRepository(HexaShopDbContext dbContext) : base(dbContext)
+        public OrderDetailRepository(HexaShopDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
-
-
-
     }
 }

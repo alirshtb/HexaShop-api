@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HexaShop.Application.Constracts.PersistanceContracts;
 using HexaShop.Application.Features.OrderFeatures.Requests.Commands;
+using HexaShop.Application.Features.PaymentFeatures.Requests.Commands;
 using HexaShop.Common;
 using HexaShop.Common.CommonExtenstionMethods;
 using MediatR;
@@ -31,22 +32,27 @@ namespace HexaShop.EndPoint.Controllers
         {
             try
             {
-                var currentUserId = await _unitOfWork.AppUserRepository.GetCurrentUserId(User);
+                //var currentUserId = await _unitOfWork.AppUserRepository.GetCurrentUserId(User);
 
-                // --- user no user is signed in --- //
-                if(currentUserId == null)
-                {
-                    ExceptionHelpers.ThrowException(ApplicationMessages.NoSignedInUserFound);
-                }
+                // --- no user is signed in --- //
+                //if(currentUserId == null)
+                //{
+                //    ExceptionHelpers.ThrowException(ApplicationMessages.NoSignedInUserFound);
+                //}
 
                 // --- created order --- //
-                var orderId = _mediator.Send(new CreateOrderCR()
+                var orderId = await _mediator.Send(new CreateOrderCR()
                 {
                     CartId = cartId,
-                    AppUserId = (int)currentUserId
+                    //AppUserId = (int)currentUserId
+                    AppUserId = 3
                 });
 
-
+                // --- pay order --- //
+                var paymentId = await _mediator.Send(new PayOrderCR()
+                {
+                    OrderId = orderId.ResultData
+                });
 
                 return Ok();
             }

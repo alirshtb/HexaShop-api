@@ -13,24 +13,6 @@ namespace HexaShop.Application.Dtos.ProductDtos.Queries
         public long? Price { get; set; }
         public bool? IsSpecial { get; set; }
         public List<int> Categories { get; set; }
-        public string? OrderBy
-        {
-            get
-            {
-                return OrderBy.ToLower().ToString();
-            }
-        }
-        public string? OrderingDirection
-        {
-            get
-            {
-                return OrderingDirection == null ? "asc" : OrderingDirection.ToLower().ToString();
-            }
-            set
-            {
-                OrderingDirection = value == null ? "asc" : value.ToLower();
-            }
-        }
 
     }
 }

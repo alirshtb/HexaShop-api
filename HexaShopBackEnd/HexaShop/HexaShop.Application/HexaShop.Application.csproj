@@ -25,7 +25,6 @@
     <Folder Include="Features\AppUserFeatures\RequestHandlers\Queries\" />
     <Folder Include="Features\AppUserFeatures\Requests\Queries\" />
     <Folder Include="Features\CartFeatures\RequestHandlers\Commands\" />
-    <Folder Include="Features\PaymentFeatures\" />
     <Folder Include="Features\OrderFeatures\RequestHandlers\Queries\" />
     <Folder Include="Features\OrderFeatures\Requests\Queries\" />
   </ItemGroup>
@@ -36,6 +35,7 @@
     <PackageReference Include="FluentValidation" Version="11.5.1" />
     <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="ZarinpalSandbox" Version="2.0.4" />
   </ItemGroup>
 
 </Project>

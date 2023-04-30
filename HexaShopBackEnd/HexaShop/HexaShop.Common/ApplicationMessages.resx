@@ -201,6 +201,18 @@
     <value>سفارش ثبت شد</value>
     <comment>Order Created.</comment>
   </data>
+  <data name="OrderIsInPackagingLevel" xml:space="preserve">
+    <value>سفارش در مرحله بسته بندی است.</value>
+    <comment>order is in packaging level and is not cancelable.</comment>
+  </data>
+  <data name="OrderNotFound" xml:space="preserve">
+    <value>سفارش یافت نشد</value>
+    <comment>Order Not Found</comment>
+  </data>
+  <data name="OrderPaidAndWaitToCinfirm" xml:space="preserve">
+    <value>پرداخت شده و در انتظار تایید توسط مدیر</value>
+    <comment>wait to confirm order payment.</comment>
+  </data>
   <data name="OrderPaymentLevel" xml:space="preserve">
     <value>در انتظار پرداخت.</value>
     <comment>Order Payment Level.</comment>
@@ -232,6 +244,10 @@
   <data name="UserCreatedSuccessfuly" xml:space="preserve">
     <value>کاربر با موفقیت ایجاد شد.</value>
     <comment>Sign Up</comment>
+  </data>
+  <data name="UserHaveInProccessOrder" xml:space="preserve">
+    <value>یک سفارش در حال پردازش وجود دارد.</value>
+    <comment>an order is in proccess.</comment>
   </data>
   <data name="UserIsNotActive" xml:space="preserve">
     <value>کاربر غیر فعال است.</value>

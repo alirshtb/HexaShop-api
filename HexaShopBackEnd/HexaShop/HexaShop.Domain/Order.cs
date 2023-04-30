@@ -29,6 +29,9 @@ namespace HexaShop.Domain
 
         public virtual ICollection<OrderLevelLog> LevelLogs { get; set; }
 
+
+        public virtual ICollection<OrderDetails> Details { get; set; }
+
         #endregion
     }
 }

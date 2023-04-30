@@ -70,6 +70,10 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
                 .HasForeignKey(p => p.DiscountId)
                 .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
 
+            builder.HasMany(p => p.OrderDetails)
+                .WithOne(od => od.Product)
+                .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
+
             #endregion Relations
         }
     }

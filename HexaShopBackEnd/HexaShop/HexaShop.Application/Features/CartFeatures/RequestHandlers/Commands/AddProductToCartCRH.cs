@@ -55,7 +55,6 @@ namespace HexaShop.Application.Features.CartFeatures.RequestHandlers.Commands
                 {
                     AppUserId = request.UserId == null ? null : request.UserId.Value,
                     BrowserId = new Guid(request.BrowserId),
-                    IsFinished = false,
                     IsActive = true,
                     IsDeleted = false
                 };

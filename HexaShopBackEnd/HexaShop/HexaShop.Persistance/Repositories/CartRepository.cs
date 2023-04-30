@@ -4,6 +4,7 @@ using HexaShop.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,8 +30,7 @@ namespace HexaShop.Persistance.Repositories
             var allCarts = GetAsQueryable(includes: includes);
             var lastActiveOne = allCarts.OrderByDescending(c => c.DateCreated)
                                         .SingleOrDefault(c => c.IsActive == true &&
-                                                     c.BrowserId.ToString().ToLower() == browserId.ToLower() &&
-                                                     c.IsFinished == false);
+                                                     c.BrowserId.ToString().ToLower() == browserId.ToLower());
 
             return lastActiveOne;
         }
@@ -46,8 +46,7 @@ namespace HexaShop.Persistance.Repositories
             var allCarts = GetAsQueryable(includes: includes);
             var lastActiveOne = allCarts.OrderByDescending(c => c.DateCreated)
                                         .SingleOrDefault(c => c.IsActive == true &&
-                                                     c.AppUserId == userId &&
-                                                     c.IsFinished == false);
+                                                     c.AppUserId == userId);
 
             return lastActiveOne;
         }
@@ -90,6 +89,24 @@ namespace HexaShop.Persistance.Repositories
             var cart = GetActiveByBrowserId(browserId);
             cart.AppUserId = appUserId;
             Update(cart);
+        }
+
+        /// <summary>
+        /// get last not completed order if exists
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
+        public Order GetNotCompletedOrder(int cartId)
+        {
+            // --- every order must have only one(1) not completed order --- //
+            var order = _dbContext.Orders.Where(o => o.CartId == cartId && 
+                                                     !o.IsCompleted && 
+                                                     o.IsActive &&
+                                                     o.Level == Common.OrderProgressLevel.WaitToPayment)
+                                         .SingleOrDefault();
+
+            return order;
+
         }
 
     }

@@ -32,7 +32,7 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
             builder.HasOne(l => l.Order)
                 .WithMany(o => o.LevelLogs)
                 .HasForeignKey(l => l.OrderId)
-                .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
+                .OnDelete(deleteBehavior: DeleteBehavior.ClientNoAction);
 
             #endregion
 

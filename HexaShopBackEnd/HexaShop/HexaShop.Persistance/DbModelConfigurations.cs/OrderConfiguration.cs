@@ -34,7 +34,7 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
 
             builder.HasMany(o => o.LevelLogs)
                 .WithOne(l => l.Order)
-                .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
+                .OnDelete(deleteBehavior: DeleteBehavior.ClientNoAction);
 
             builder.HasMany(o => o.Payments)
                 .WithOne(p => p.Order)
@@ -46,9 +46,13 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
                 .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
 
             builder.HasOne(o => o.Cart)
-                .WithOne(c => c.Order)
-                .HasForeignKey<Order>(o => o.CartId)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.CartId)
                 .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
+
+            builder.HasMany(o => o.Details)
+                .WithOne(od => od.Order)
+                .OnDelete(deleteBehavior: DeleteBehavior.Cascade);
 
             #endregion
 

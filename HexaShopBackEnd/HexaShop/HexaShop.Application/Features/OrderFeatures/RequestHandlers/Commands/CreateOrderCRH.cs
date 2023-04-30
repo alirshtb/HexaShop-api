@@ -37,6 +37,7 @@ namespace HexaShop.Application.Features.OrderFeatures.RequestHandlers.Commands
                 "Items",
                 "Items.Product",
                 "Items.Product.Discount",
+                "Orders"
             };
             var cart = await _unitOfWork.CartRepository.GetAsync(request.CartId, includes: cartIncludes);
 
@@ -45,27 +46,49 @@ namespace HexaShop.Application.Features.OrderFeatures.RequestHandlers.Commands
                 ExceptionHelpers.ThrowException(ApplicationMessages.CartNotFound);
             }
 
+            #region Delete order and order details before creating order
+
+            var cartNotCompletedOrder = _unitOfWork.CartRepository.GetNotCompletedOrder(cart.Id);
+
+            if(cartNotCompletedOrder != null)
+            {
+                // remove order --- //
+                await DeleteOrderInfos(cartNotCompletedOrder.Id);
+            }
+            else if(cartNotCompletedOrder == null && cart.Orders.Count() > 0)
+            {
+                ExceptionHelpers.ThrowException(ApplicationMessages.UserHaveInProccessOrder);
+            }
+
+            #endregion Delete order and order details before creating order
+
 
             var cartItems = cart.Items;
 
-            // --- all amount --- // 
-            long? amount = cartItems.Sum(item => item.Product.Price);
+            #region Calculations 
 
             // --- all count --- //
             int? count = cartItems.Sum(item => item.Count);
 
+            // --- all amount --- // 
+            long? amount = cartItems.Sum(item => item.Product.Price) * count;
+
+
             // --- all discount Percent --- //
             int? discountPercent = cartItems.Sum(item => item.Product.Discount.Percent);
-            var allDiscountAmount = cartItems.Sum(item => item.Product.Price - ((item.Product.Discount.Percent / 100) * item.Product.Price));
+            long allDiscountAmount = (long)cartItems.Sum(item => (item.Product.Price * item.Product.Discount.Percent / 100)) * (int)count;
 
             // --- amount afterDiscount --- //
             var netAmountAfterDiscount = amount - allDiscountAmount;
 
             // --- with tax --- //
-            var withTaxAmount = netAmountAfterDiscount + netAmountAfterDiscount * (9 / 100);
+            var taxAmount = Math.Ceiling((long)netAmountAfterDiscount / 1.09);
+            var withTaxAmount = netAmountAfterDiscount + (Math.Floor(taxAmount * 9 / 100));
 
+            #endregion Calculations
 
-            if (withTaxAmount < 0)
+            // --- validate amount --- //
+            if (withTaxAmount <= 0)
             {
                 return new ResultDto<int>()
                 {
@@ -75,12 +98,13 @@ namespace HexaShop.Application.Features.OrderFeatures.RequestHandlers.Commands
                 };
             }
 
+            // --- add order --- //
             using var transaction = await _unitOfWork.BeginTransactionAsync();
             try
             {
                 var order = new Order()
                 {
-                    Amount = (long)withTaxAmount,
+                    Amount = (long)netAmountAfterDiscount,
                     AppUserId = request.AppUserId,
                     CartId = request.CartId,
                     DiscountAmount = allDiscountAmount,
@@ -88,13 +112,14 @@ namespace HexaShop.Application.Features.OrderFeatures.RequestHandlers.Commands
                     IsActive = true,
                     DateCreated = DateTime.Now,
                     IsDeleted = false,
-                    Level = OrderProgressLevel.Payment,
+                    TaxAmount = (long)taxAmount,
+                    Level = OrderProgressLevel.WaitToPayment,
                     LevelLogs = new List<OrderLevelLog>()
                     {
-                        new OrderLevelLog()
+                        new OrderLevelLog() // --- log status --- //
                         {
-                            CurrentLevel = OrderProgressLevel.Payment,
-                            NextLevel = OrderProgressLevel.WaitToConfirm,
+                            CurrentLevel = OrderProgressLevel.WaitToPayment,
+                            NextLevel = OrderProgressLevel.Paid,
                             Title = ApplicationMessages.OrderPaymentLevel
                         }
                     }
@@ -102,14 +127,32 @@ namespace HexaShop.Application.Features.OrderFeatures.RequestHandlers.Commands
 
                 await _unitOfWork.OrderRepository.AddAsync(order);
 
+                foreach (var item in cartItems)
+                {
+                    var orderDetail = new OrderDetails()
+                    {
+                        Count = item.Count,
+                        UnitPrice = item.Price,
+                        UnitDiscount = item.Price * item.Product.Discount.Percent / 100,
+                        OrderId = order.Id,
+                        ProductId = item.ProductId,
+                        TotalDiscount = (item.Price * item.Product.Discount.Percent / 100) * item.Count,
+                        TotalAmount = (item.Price * item.Count) // --- without deduction of discount --- //
+                    };
+
+                    await _unitOfWork.OrderDetailRepository.AddAsync(orderDetail);
+                }
+
                 await transaction.CommitAsync();
 
+                // --- return result --- //
                 return new ResultDto<int>()
                 {
                     IsSuccess = true,
                     ResultData = order.Id,
                     Message = ApplicationMessages.OrderCreated
                 };
+
             }
             catch (Exception)
             {
@@ -118,5 +161,46 @@ namespace HexaShop.Application.Features.OrderFeatures.RequestHandlers.Commands
             }
 
         }
+
+        /// <summary>
+        /// delete order all info
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public async Task DeleteOrderInfos(int orderId)
+        {
+            var orderIncludes = new List<string>()
+            {
+                "Details",
+                "LevelLogs",
+                "Payments",
+            };
+            var order = await _unitOfWork.OrderRepository.GetAsync(orderId, orderIncludes);
+
+            // --- delete order details --- //
+            foreach (var orderDetail in order.Details)
+            {
+                await _unitOfWork.OrderDetailRepository.DeleteAsync(orderDetail.Id);
+            }
+
+            // --- delete order level logs --- //
+            //order.LevelLogs.Clear();
+
+            // --- delete order payments --- //
+            foreach (var orderPayment in order.Payments)
+            {
+                await _unitOfWork.PaymentRepository.DeleteAsync(orderPayment.Id);
+            }
+
+            // --- delete order itself --- //
+            await _unitOfWork.OrderRepository.DeleteAsync(order.Id);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            await Task.CompletedTask;
+
+        }
+
+
     }
 }

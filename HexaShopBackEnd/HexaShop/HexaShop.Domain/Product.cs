@@ -28,6 +28,11 @@ namespace HexaShop.Domain
 
         public int DiscountId { get; set; }
         public virtual Discount Discount { get; set; }
+
+
+        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+
+
         #endregion Relations
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HexaShop.Persistance.Migrations
 {
     [DbContext(typeof(HexaShopDbContext))]
-    [Migration("20230417181307_AddOrderAndPaymentAndOrderLevelLogTbls")]
-    partial class AddOrderAndPaymentAndOrderLevelLogTbls
+    [Migration("20230430192926_addPayment")]
+    partial class addPayment
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -242,17 +242,11 @@ namespace HexaShop.Persistance.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -595,10 +589,57 @@ namespace HexaShop.Persistance.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("CartId")
-                        .IsUnique();
+                    b.HasIndex("CartId");
 
                     b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("HexaShop.Domain.OrderDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TotalAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.Property<long>("TotalDiscount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.Property<long>("UnitDiscount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.Property<long>("UnitPrice")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("HexaShop.Domain.OrderLevelLog", b =>
@@ -630,7 +671,7 @@ namespace HexaShop.Persistance.Migrations
                     b.ToTable("OrderLevelLogs", (string)null);
                 });
 
-            modelBuilder.Entity("HexaShop.Domain.Paid", b =>
+            modelBuilder.Entity("HexaShop.Domain.Payment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -648,12 +689,13 @@ namespace HexaShop.Persistance.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FailureReason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Info")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -662,7 +704,9 @@ namespace HexaShop.Persistance.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsSuccessful")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -677,7 +721,7 @@ namespace HexaShop.Persistance.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Paid");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("HexaShop.Domain.Product", b =>
@@ -981,8 +1025,8 @@ namespace HexaShop.Persistance.Migrations
                         .IsRequired();
 
                     b.HasOne("HexaShop.Domain.Cart", "Cart")
-                        .WithOne("Order")
-                        .HasForeignKey("HexaShop.Domain.Order", "CartId")
+                        .WithMany("Orders")
+                        .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -991,18 +1035,37 @@ namespace HexaShop.Persistance.Migrations
                     b.Navigation("Cart");
                 });
 
+            modelBuilder.Entity("HexaShop.Domain.OrderDetails", b =>
+                {
+                    b.HasOne("HexaShop.Domain.Order", "Order")
+                        .WithMany("Details")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HexaShop.Domain.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("HexaShop.Domain.OrderLevelLog", b =>
                 {
                     b.HasOne("HexaShop.Domain.Order", "Order")
                         .WithMany("LevelLogs")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.ClientNoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("HexaShop.Domain.Paid", b =>
+            modelBuilder.Entity("HexaShop.Domain.Payment", b =>
                 {
                     b.HasOne("HexaShop.Domain.Order", "Order")
                         .WithMany("Payments")
@@ -1113,8 +1176,7 @@ namespace HexaShop.Persistance.Migrations
                 {
                     b.Navigation("Items");
 
-                    b.Navigation("Order")
-                        .IsRequired();
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("HexaShop.Domain.Category", b =>
@@ -1131,6 +1193,8 @@ namespace HexaShop.Persistance.Migrations
 
             modelBuilder.Entity("HexaShop.Domain.Order", b =>
                 {
+                    b.Navigation("Details");
+
                     b.Navigation("LevelLogs");
 
                     b.Navigation("Payments");
@@ -1145,6 +1209,8 @@ namespace HexaShop.Persistance.Migrations
                     b.Navigation("Details");
 
                     b.Navigation("Images");
+
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

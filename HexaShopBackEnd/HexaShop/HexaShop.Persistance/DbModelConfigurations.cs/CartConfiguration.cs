@@ -33,6 +33,10 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
                 .IsRequired(false)
                 .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
 
+            builder.HasMany(c => c.Orders)
+                .WithOne(o => o.Cart)
+                .OnDelete(deleteBehavior: DeleteBehavior.Restrict);
+
             #endregion Relations 
         }
     }

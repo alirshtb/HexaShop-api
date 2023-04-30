@@ -92,7 +92,7 @@ namespace HexaShop.EndPoint.Controllers
         /// <param name="getProductListRequest"></param>
         /// <returns></returns>
         [HttpPost("GetList")]
-        public async Task<ActionResult<IEnumerable<GetProductListDto>>> GetList([FromBody] GetProductListRequestDto getProductListRequest)
+        public async Task<IActionResult> GetList([FromBody] GetProductListRequestDto getProductListRequest)
         {
             try
             {
@@ -196,7 +196,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost("productId-{id}/AddToCart")]
+        [HttpPost("AddToCart")]
         public async Task<IActionResult> AddToCart([FromBody] AddProductToCartViewModel model)
         {
             try
@@ -217,11 +217,18 @@ namespace HexaShop.EndPoint.Controllers
 
                 var userId = await _unitOfWork.AppUserRepository.GetCurrentUserId(User);
 
+                var product = await _unitOfWork.ProductRepository.GetAsync(model.ProductId);
+
+                if (product == null)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.ProductNotFound);
+                }
+
                 var request = new AddProductToCartCR()
                 {
                     BrowserId = browserId,
                     Count = model.Count,
-                    Price = model.Price,
+                    Price = product.Price,
                     ProductId = model.ProductId,
                     UserId = userId,
                     HttpContext = HttpContext

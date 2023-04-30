@@ -88,7 +88,7 @@ namespace HexaShop.Persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payment",
+                name: "WaitToPayment",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -134,7 +134,7 @@ namespace HexaShop.Persistance.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payment_OrderId",
-                table: "Payment",
+                table: "WaitToPayment",
                 column: "OrderId");
         }
 
@@ -145,7 +145,7 @@ namespace HexaShop.Persistance.Migrations
                 name: "OrderLevelLogs");
 
             migrationBuilder.DropTable(
-                name: "Payment");
+                name: "WaitToPayment");
 
             migrationBuilder.DropTable(
                 name: "Orders");

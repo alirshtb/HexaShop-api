@@ -250,6 +250,33 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سفارش در مرحله بسته بندی است..
+        /// </summary>
+        public static string OrderIsInPackagingLevel {
+            get {
+                return ResourceManager.GetString("OrderIsInPackagingLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سفارش یافت نشد.
+        /// </summary>
+        public static string OrderNotFound {
+            get {
+                return ResourceManager.GetString("OrderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to پرداخت شده و در انتظار تایید توسط مدیر.
+        /// </summary>
+        public static string OrderPaidAndWaitToCinfirm {
+            get {
+                return ResourceManager.GetString("OrderPaidAndWaitToCinfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to در انتظار پرداخت..
         /// </summary>
         public static string OrderPaymentLevel {
@@ -318,6 +345,15 @@ namespace HexaShop.Common {
         public static string UserCreatedSuccessfuly {
             get {
                 return ResourceManager.GetString("UserCreatedSuccessfuly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to یک سفارش در حال پردازش وجود دارد..
+        /// </summary>
+        public static string UserHaveInProccessOrder {
+            get {
+                return ResourceManager.GetString("UserHaveInProccessOrder", resourceCulture);
             }
         }
         

@@ -21,19 +21,24 @@ namespace HexaShop.Common
         {
             var fieldToOrder = typeof(T).GetProperties()
                                  .Where(p => p.Name.ToLower() == orderBy.ToLower())
-                                 .FirstOrDefault()
-                                 .Name;
+                                 .FirstOrDefault();
 
-            if (fieldToOrder == null) fieldToOrder = "Id";
+            if(fieldToOrder == null)
+            {
+                return source;
+            }
+
+            var orderField = fieldToOrder.Name;
+            if (orderField == null) orderField = "Id";
 
 
             if (direction.ToLower() == "asc")
             {
-                source = source.OrderBy(p => fieldToOrder);
+                source = source.OrderBy(p => orderField);
             }
             else
             {
-                source = source.OrderByDescending(p => fieldToOrder);
+                source = source.OrderByDescending(p => orderField);
             }
 
             return source;

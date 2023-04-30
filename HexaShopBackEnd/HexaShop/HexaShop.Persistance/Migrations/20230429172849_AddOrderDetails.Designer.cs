@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HexaShop.Persistance.Migrations
 {
     [DbContext(typeof(HexaShopDbContext))]
-    [Migration("20230417181307_AddOrderAndPaymentAndOrderLevelLogTbls")]
-    partial class AddOrderAndPaymentAndOrderLevelLogTbls
+    [Migration("20230429172849_AddOrderDetails")]
+    partial class AddOrderDetails
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -601,6 +601,54 @@ namespace HexaShop.Persistance.Migrations
                     b.ToTable("Orders", (string)null);
                 });
 
+            modelBuilder.Entity("HexaShop.Domain.OrderDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TotalAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.Property<long>("TotalDiscount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.Property<long>("UnitDiscount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.Property<long>("UnitPrice")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails", (string)null);
+                });
+
             modelBuilder.Entity("HexaShop.Domain.OrderLevelLog", b =>
                 {
                     b.Property<int>("Id")
@@ -991,6 +1039,25 @@ namespace HexaShop.Persistance.Migrations
                     b.Navigation("Cart");
                 });
 
+            modelBuilder.Entity("HexaShop.Domain.OrderDetails", b =>
+                {
+                    b.HasOne("HexaShop.Domain.Order", "Order")
+                        .WithMany("Details")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HexaShop.Domain.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("HexaShop.Domain.OrderLevelLog", b =>
                 {
                     b.HasOne("HexaShop.Domain.Order", "Order")
@@ -1131,6 +1198,8 @@ namespace HexaShop.Persistance.Migrations
 
             modelBuilder.Entity("HexaShop.Domain.Order", b =>
                 {
+                    b.Navigation("Details");
+
                     b.Navigation("LevelLogs");
 
                     b.Navigation("Payments");
@@ -1145,6 +1214,8 @@ namespace HexaShop.Persistance.Migrations
                     b.Navigation("Details");
 
                     b.Navigation("Images");
+
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

@@ -35,6 +35,7 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
         public IDiscountRepository DiscountRepository { get; }
         public IPaymentRepository PaymentRepository { get; }
         public IOrderRepository OrderRepository { get; }
+        public IOrderDetailRepository OrderDetailRepository { get; }
 
         #endregion Repositories
 

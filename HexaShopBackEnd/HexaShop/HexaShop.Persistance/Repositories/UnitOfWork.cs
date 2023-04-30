@@ -29,11 +29,6 @@ namespace HexaShop.Persistance.Repositories
 
         }
 
-
-
-
-
-
         #region Repositories
 
         private readonly IAppUserRepository _appUserRepository;
@@ -82,6 +77,10 @@ namespace HexaShop.Persistance.Repositories
 
         private readonly IOrderRepository _orderRepository;
         public IOrderRepository OrderRepository => _orderRepository ?? new OrderRepository(_dbContext);
+
+
+        private readonly IOrderDetailRepository _orderDetailRepository;
+        public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository ?? new OrderDetailRepository(_dbContext);
 
         #endregion Repositories
 

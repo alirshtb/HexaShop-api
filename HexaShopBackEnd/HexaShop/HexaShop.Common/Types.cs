@@ -41,11 +41,11 @@ namespace HexaShop.Common
         /// <summary>
         /// در انتظار پرداخت
         /// </summary>
-        Payment = 0,
+        WaitToPayment = 0,
         /// <summary>
-        /// در اناظار تایید مدیر
+        /// پرداخت شده
         /// </summary>
-        WaitToConfirm = 1,
+        Paid = 1,
         /// <summary>
         /// تایید شده
         /// </summary>

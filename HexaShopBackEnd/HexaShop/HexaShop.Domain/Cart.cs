@@ -12,7 +12,6 @@ namespace HexaShop.Domain
     {
 
         public Guid BrowserId { get; set; }
-        public bool IsFinished { get; set; }
 
         #region Relations
 
@@ -21,8 +20,7 @@ namespace HexaShop.Domain
 
         public virtual ICollection<CartItems> Items { get; set; }
 
-        public int OrderId { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
 
         
         #endregion
