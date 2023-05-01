@@ -5,8 +5,10 @@ using HexaShop.Common.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,5 +60,27 @@ namespace HexaShop.Common
 
         }
         
+        /// <summary>
+        /// check internet connection.
+        /// </summary>
+        /// <param name="timeoutMs"></param>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public static bool CheckInternetConnection(int timeoutMs = 10000, string url = @"https://www.google.com/")
+        {
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create(url);
+                request.KeepAlive = false;
+                request.Timeout = timeoutMs;
+                using (var response = (HttpWebResponse)request.GetResponse())
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
     }
 }

@@ -109,5 +109,27 @@ namespace HexaShop.Persistance.Repositories
 
         }
 
+        /// <summary>
+        /// clear a cart items.
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
+        public async Task ClearItems(int cartId)
+        {
+            var cart = await GetAsync(cartId, includes: new List<string>()
+            {
+                "Items"
+            });
+
+            foreach (var item in cart.Items)
+            {
+                item.IsDeleted = true;
+                await _dbContext.SaveChangesAsync();
+
+            }
+
+            await Task.CompletedTask;
+        }
+
     }
 }

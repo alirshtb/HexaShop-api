@@ -27,12 +27,12 @@ namespace HexaShop.Persistance.DbModelConfigurations.cs
             builder.HasOne(ci => ci.Cart)
                 .WithMany(c => c.Items)
                 .HasForeignKey(ci => ci.CartId)
-                .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
+                .OnDelete(deleteBehavior: DeleteBehavior.ClientNoAction);
 
             builder.HasOne(ci => ci.Product)
                 .WithMany(p => p.CartItems)
                 .HasForeignKey(ci => ci.ProductId)
-                .OnDelete(deleteBehavior: DeleteBehavior.NoAction);
+                .OnDelete(deleteBehavior: DeleteBehavior.ClientNoAction);
 
             #endregion Relations 
         }

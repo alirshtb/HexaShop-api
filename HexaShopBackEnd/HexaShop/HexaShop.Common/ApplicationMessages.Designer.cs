@@ -340,6 +340,15 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عدم اتصال به اینترنت.
+        /// </summary>
+        public static string ThereIsNotInternetConnection {
+            get {
+                return ResourceManager.GetString("ThereIsNotInternetConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to کاربر با موفقیت ایجاد شد..
         /// </summary>
         public static string UserCreatedSuccessfuly {

@@ -15,5 +15,6 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
         Cart GetActiveByBrowserId(string browserId, List<string> includes = null);
         void UpdateOnSignIn(string browserId, int appUserId);
         Order GetNotCompletedOrder(int cartId);
+        Task ClearItems(int cartId);
     }
 }

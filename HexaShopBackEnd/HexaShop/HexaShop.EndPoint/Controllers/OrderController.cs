@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using System.Net.NetworkInformation;
 
 namespace HexaShop.EndPoint.Controllers
 {
@@ -32,6 +33,7 @@ namespace HexaShop.EndPoint.Controllers
         {
             try
             {
+
                 //var currentUserId = await _unitOfWork.AppUserRepository.GetCurrentUserId(User);
 
                 // --- no user is signed in --- //
@@ -40,19 +42,56 @@ namespace HexaShop.EndPoint.Controllers
                 //    ExceptionHelpers.ThrowException(ApplicationMessages.NoSignedInUserFound);
                 //}
 
+                // --- first check internet connection --- //
+                if(!CommonStaticFunctions.CheckInternetConnection())
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.ThereIsNotInternetConnection);
+                }
+
+
+                
                 // --- created order --- //
-                var orderId = await _mediator.Send(new CreateOrderCR()
+                var createOrderResult = await _mediator.Send(new CreateOrderCR()
                 {
                     CartId = cartId,
                     //AppUserId = (int)currentUserId
                     AppUserId = 3
                 });
 
-                // --- pay order --- //
-                var paymentId = await _mediator.Send(new PayOrderCR()
+
+                // --- find order --- //
+                var orderIncludes = new List<string>()
                 {
-                    OrderId = orderId.ResultData
+                    "Payments",
+                    "Cart.Items"
+                };
+                var order = await _unitOfWork.OrderRepository.GetAsync(createOrderResult.ResultData, includes: orderIncludes);
+
+                if(order == null)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.OrderNotFound);
+                }
+
+                
+                // --- pay order --- //
+                var paymentResult = await _mediator.Send(new PayOrderCR()
+                {
+                    OrderId = createOrderResult.ResultData
                 });
+
+                using var transaction = await _unitOfWork.BeginTransactionAsync();
+
+                // --- update order if payment is successful --- //
+                if (order.Payments.Any(p => p.IsSuccessful))
+                {
+                    order.IsCompleted = true;
+                    await _unitOfWork.OrderRepository.UpdateAsync(order);
+
+                    await _unitOfWork.CartRepository.ClearItems(order.CartId);
+
+                }
+
+                await transaction.CommitAsync();
 
                 return Ok();
             }

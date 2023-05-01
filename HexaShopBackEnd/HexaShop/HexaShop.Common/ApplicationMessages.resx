@@ -241,6 +241,10 @@
     <value>عملیات ورود به حساب کاربری با موفقیت انجام شد.</value>
     <comment>Successful SignIn</comment>
   </data>
+  <data name="ThereIsNotInternetConnection" xml:space="preserve">
+    <value>عدم اتصال به اینترنت</value>
+    <comment>there is no internet connection.</comment>
+  </data>
   <data name="UserCreatedSuccessfuly" xml:space="preserve">
     <value>کاربر با موفقیت ایجاد شد.</value>
     <comment>Sign Up</comment>

@@ -7,6 +7,7 @@ using HexaShop.Domain;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,49 +50,62 @@ namespace HexaShop.Application.Features.PaymentFeatures.RequestHandlers.Commands
                                                    "https://localhost:44317/api/Product/Get/2",
                                                    "dev.alirashtbari@gmail.com",
                                                    "09917586411");
-            // --- add new payment record --- //
-            var orderPayment = new Payment()
+
+            try
             {
-                Amount = order.Amount,
-                Info = payRequest.Status.ToString(),
-                OrderId = order.Id,
-                IsSuccessful = true,
-                FailureReason = null,
-                
-            };
-
-            order.Payments.Add(orderPayment);
-
-            await _unitOfWork.OrderRepository.UpdateAsync(order);
-
-
-            // --- if result is successful then change order level to wait to confirm --- //
-            var payResult = payRequest;
-            if (payResult.Status == 100)
-            {
-                order.LevelLogs.Add(new OrderLevelLog()
+                using var transaction = await _unitOfWork.BeginTransactionAsync();
+                // --- add new payment record --- //
+                var orderPayment = new Payment()
                 {
-                    CurrentLevel = order.LevelLogs.OrderByDescending(l => l.Id).First().NextLevel,
-                    NextLevel = Common.OrderProgressLevel.Confirmed,
-                    Title = ApplicationMessages.OrderPaidAndWaitToCinfirm,
-                });
+                    Amount = order.Amount,
+                    Info = payRequest.Status.ToString(),
+                    OrderId = order.Id,
+                    IsSuccessful = true,
+                    FailureReason = null,
+
+                };
+
+                order.Payments.Add(orderPayment);
 
                 await _unitOfWork.OrderRepository.UpdateAsync(order);
-            }
-            else // --- else chagne payment failure reason to payment status and payment is success to false --- //
-            {
-                orderPayment.FailureReason = payRequest.Status.ToString();
-                orderPayment.IsSuccessful = false;
 
-                await _unitOfWork.PaymentRepository.UpdateAsync(orderPayment);
+
+                // --- if result is successful then change order level to wait to confirm --- //
+                var payResult = payRequest;
+                if (payResult.Status == 100)
+                {
+                    order.LevelLogs.Add(new OrderLevelLog()
+                    {
+                        CurrentLevel = order.LevelLogs.OrderByDescending(l => l.Id).First().NextLevel,
+                        NextLevel = Common.OrderProgressLevel.Confirmed,
+                        Title = ApplicationMessages.OrderPaidAndWaitToCinfirm,
+                    });
+
+                    await _unitOfWork.OrderRepository.UpdateAsync(order);
+                }
+                else // --- else chagne payment failure reason to payment status and payment is success to false --- //
+                {
+                    orderPayment.FailureReason = payRequest.Status.ToString();
+                    orderPayment.IsSuccessful = false;
+
+                    await _unitOfWork.PaymentRepository.UpdateAsync(orderPayment);
+                }
+
+                await transaction.CommitAsync();
+
+                return new ResultDto<int>()
+                {
+                    IsSuccess = true,
+                    Message = "order paid.",
+                    ResultData = orderPayment.Id
+                };
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollBackTransactionAsync();
+                throw;
             }
 
-            return new ResultDto<int>()
-            {
-                IsSuccess = true,
-                Message = "order paid.",
-                ResultData = orderPayment.Id
-            };
         }
     }
 }
