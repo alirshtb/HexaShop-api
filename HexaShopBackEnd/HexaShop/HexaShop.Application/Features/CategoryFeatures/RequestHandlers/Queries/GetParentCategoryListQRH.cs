@@ -47,7 +47,7 @@ namespace HexaShop.Application.Features.CategoryFeatures.RequestHandlers.Queries
 
             #region Apply Ordering
 
-            parentCategories = parentCategories.PrivateOrderBy(request.GetCategoryList.OrderBy, request.GetCategoryList.OrderDirection);
+            parentCategories = parentCategories.SystemOrderBy(request.GetCategoryList.OrderBy, request.GetCategoryList.OrderDirection);
 
             #endregion apply ordering
 

@@ -52,7 +52,7 @@ namespace HexaShop.Application.Features.DiscountFeatures.RequestHandlers.Queries
 
             #region Ordering
 
-            allDiscounts = allDiscounts.PrivateOrderBy(request.GetDiscountListRequest.OrderBy, request.GetDiscountListRequest.OrderDirection);
+            allDiscounts = allDiscounts.SystemOrderBy(request.GetDiscountListRequest.OrderBy, request.GetDiscountListRequest.OrderDirection);
 
             #endregion
 

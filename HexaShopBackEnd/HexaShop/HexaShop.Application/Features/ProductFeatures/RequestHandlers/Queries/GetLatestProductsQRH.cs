@@ -51,7 +51,7 @@ namespace HexaShop.Application.Features.ProductFeatures.RequestHandlers.Queries
 
             #region Apply Ordering
 
-            products = products.PrivateOrderBy(request.GetProductListRequest.OrderBy, request.GetProductListRequest.OrderDirection);
+            products = products.SystemOrderBy(request.GetProductListRequest.OrderBy, request.GetProductListRequest.OrderDirection);
 
             #endregion apply ordering
 
