@@ -108,7 +108,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost("{id}/Confirm")]
+        [HttpPut("{id}/Confirm")]
         public async Task<IActionResult> Confirm(int id)
         {
             try
@@ -145,7 +145,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost("{id}/SendToDestination")]
+        [HttpPut("{id}/SendToDestination")]
         public async Task<IActionResult> SendToDestination(int id)
         {
             try
@@ -182,7 +182,7 @@ namespace HexaShop.EndPoint.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost("{id}/Reject")]
+        [HttpPut("{id}/Reject")]
         public async Task<IActionResult> Reject(int id)
         {
             try
@@ -216,6 +216,7 @@ namespace HexaShop.EndPoint.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
 
     }
