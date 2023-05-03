@@ -205,6 +205,10 @@
     <value>سفارش ثبت شد</value>
     <comment>Order Created.</comment>
   </data>
+  <data name="OrderIsInNotProperLevelToReject" xml:space="preserve">
+    <value>سفارش در محله مناسبی برای رد کردن نیست.</value>
+    <comment>order level must be in confirmed or lower to could be rejected.</comment>
+  </data>
   <data name="OrderIsInPackagingLevel" xml:space="preserve">
     <value>سفارش در مرحله بسته بندی است.</value>
     <comment>order is in packaging level and is not cancelable.</comment>
@@ -212,6 +216,10 @@
   <data name="OrderLevelIsNotProperToConfirm" xml:space="preserve">
     <value>سفارش هنوز پرداخت نشده یا در مرحله مناسبی برای تایید سفارش نیست.</value>
     <comment>order status or level must be paid to could be confirmed.</comment>
+  </data>
+  <data name="OrderLevelIsNotProperToDelivery" xml:space="preserve">
+    <value>سفارش یا هنوز تایید نشده و یا در مرحله مناسب برای ارسال نیست.</value>
+    <comment>order level must be confirmed to could be sent to user.</comment>
   </data>
   <data name="OrderNotFound" xml:space="preserve">
     <value>سفارش یافت نشد</value>
@@ -224,6 +232,14 @@
   <data name="OrderPaymentLevel" xml:space="preserve">
     <value>در انتظار پرداخت.</value>
     <comment>Order Payment Level.</comment>
+  </data>
+  <data name="OrderRejected" xml:space="preserve">
+    <value>سفارش شما تایید نشد.</value>
+    <comment>order rejected.</comment>
+  </data>
+  <data name="OrderSentToUser" xml:space="preserve">
+    <value>سفارش اماده سازی و ارسال شد.</value>
+    <comment>order sent</comment>
   </data>
   <data name="ParentCategoryNotFound" xml:space="preserve">
     <value>دسته بندی والد یاقت نشد.</value>

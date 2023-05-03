@@ -259,6 +259,15 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سفارش در محله مناسبی برای رد کردن نیست..
+        /// </summary>
+        public static string OrderIsInNotProperLevelToReject {
+            get {
+                return ResourceManager.GetString("OrderIsInNotProperLevelToReject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to سفارش در مرحله بسته بندی است..
         /// </summary>
         public static string OrderIsInPackagingLevel {
@@ -273,6 +282,15 @@ namespace HexaShop.Common {
         public static string OrderLevelIsNotProperToConfirm {
             get {
                 return ResourceManager.GetString("OrderLevelIsNotProperToConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سفارش یا هنوز تایید نشده و یا در مرحله مناسب برای ارسال نیست..
+        /// </summary>
+        public static string OrderLevelIsNotProperToDelivery {
+            get {
+                return ResourceManager.GetString("OrderLevelIsNotProperToDelivery", resourceCulture);
             }
         }
         
@@ -300,6 +318,24 @@ namespace HexaShop.Common {
         public static string OrderPaymentLevel {
             get {
                 return ResourceManager.GetString("OrderPaymentLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سفارش شما تایید نشد..
+        /// </summary>
+        public static string OrderRejected {
+            get {
+                return ResourceManager.GetString("OrderRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سفارش اماده سازی و ارسال شد..
+        /// </summary>
+        public static string OrderSentToUser {
+            get {
+                return ResourceManager.GetString("OrderSentToUser", resourceCulture);
             }
         }
         

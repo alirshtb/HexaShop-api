@@ -130,7 +130,7 @@ namespace HexaShop.EndPoint.Controllers
                 }
 
                 // --- confirm --- //
-                await _unitOfWork.OrderRepository.ChagneOrderLevel(order.Id, OrderProgressLevel.Packaging, title: ApplicationMessages.OrderConfirmed);
+                await _unitOfWork.OrderRepository.ChagneOrderLevel(order.Id, OrderProgressLevel.Delivery, title: ApplicationMessages.OrderConfirmed);
 
                 return Ok(order.Id);
             }
@@ -139,5 +139,84 @@ namespace HexaShop.EndPoint.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        /// <summary>
+        /// sent order to user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost("{id}/SendToDestination")]
+        public async Task<IActionResult> SendToDestination(int id)
+        {
+            try
+            {
+                var includes = new List<string>()
+                {
+                    "LevelLogs"
+                };
+                var order = await _unitOfWork.OrderRepository.GetAsync(id, includes: includes);
+                if (order is null)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.OrderNotFound);
+                }
+
+                // --- validate order status --- //
+                if (order.Level != OrderProgressLevel.Confirmed)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.OrderLevelIsNotProperToDelivery);
+                }
+
+                // --- confirm --- //
+                await _unitOfWork.OrderRepository.ChagneOrderLevel(order.Id, OrderProgressLevel.RecievedByCustomer, title: ApplicationMessages.OrderSentToUser);
+
+                return Ok(order.Id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// reject 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost("{id}/Reject")]
+        public async Task<IActionResult> Reject(int id)
+        {
+            try
+            {
+                var includes = new List<string>()
+                {
+                    "LevelLogs"
+                };
+                var order = await _unitOfWork.OrderRepository.GetAsync(id, includes: includes);
+                if (order is null)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.OrderNotFound);
+                }
+
+                // --- validate order status --- //
+                if (order.Level <= OrderProgressLevel.Confirmed)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.OrderIsInNotProperLevelToReject);
+                }
+
+                // ToDo : if payment realy is successful must be returned.
+                // code ...
+
+                // --- confirm --- //
+                await _unitOfWork.OrderRepository.ChagneOrderLevel(order.Id, OrderProgressLevel.Rejected, title: ApplicationMessages.OrderRejected);
+
+                return Ok(order.Id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
