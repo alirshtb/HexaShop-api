@@ -1,4 +1,5 @@
-﻿using HexaShop.Domain;
+﻿using HexaShop.Common;
+using HexaShop.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace HexaShop.Application.Constracts.PersistanceContracts
 {
     public interface IOrderRepository : IGenericRepository<Order>
     {
+        Task ChagneOrderLevel(int id, OrderProgressLevel nextLevel, string title);
     }
 }

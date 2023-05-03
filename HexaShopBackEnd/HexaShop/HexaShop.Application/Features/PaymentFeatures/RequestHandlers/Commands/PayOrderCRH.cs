@@ -73,15 +73,8 @@ namespace HexaShop.Application.Features.PaymentFeatures.RequestHandlers.Commands
                 // --- if result is successful then change order level to wait to confirm --- //
                 var payResult = payRequest;
                 if (payResult.Status == 100)
-                {
-                    order.LevelLogs.Add(new OrderLevelLog()
-                    {
-                        CurrentLevel = order.LevelLogs.OrderByDescending(l => l.Id).First().NextLevel,
-                        NextLevel = Common.OrderProgressLevel.Confirmed,
-                        Title = ApplicationMessages.OrderPaidAndWaitToCinfirm,
-                    });
-
-                    await _unitOfWork.OrderRepository.UpdateAsync(order);
+                { 
+                    await _unitOfWork.OrderRepository.ChagneOrderLevel(order.Id, OrderProgressLevel.Confirmed, title: ApplicationMessages.OrderPaidAndWaitToCinfirm);
                 }
                 else // --- else chagne payment failure reason to payment status and payment is success to false --- //
                 {

@@ -197,6 +197,10 @@
     <value>کاربر وارد شده ای یافت نشد</value>
     <comment>no signed in user found.</comment>
   </data>
+  <data name="OrderConfirmed" xml:space="preserve">
+    <value>سفارش تایید شد</value>
+    <comment>order confirmed and now must be packaged.</comment>
+  </data>
   <data name="OrderCreated" xml:space="preserve">
     <value>سفارش ثبت شد</value>
     <comment>Order Created.</comment>
@@ -204,6 +208,10 @@
   <data name="OrderIsInPackagingLevel" xml:space="preserve">
     <value>سفارش در مرحله بسته بندی است.</value>
     <comment>order is in packaging level and is not cancelable.</comment>
+  </data>
+  <data name="OrderLevelIsNotProperToConfirm" xml:space="preserve">
+    <value>سفارش هنوز پرداخت نشده یا در مرحله مناسبی برای تایید سفارش نیست.</value>
+    <comment>order status or level must be paid to could be confirmed.</comment>
   </data>
   <data name="OrderNotFound" xml:space="preserve">
     <value>سفارش یافت نشد</value>

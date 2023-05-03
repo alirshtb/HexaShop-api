@@ -42,6 +42,5 @@ namespace HexaShop.Common
 
         }
 
-
     }
 }

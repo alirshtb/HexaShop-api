@@ -51,25 +51,25 @@ namespace HexaShop.Common
         /// </summary>
         Confirmed = 2,
         /// <summary>
-        /// رد شده
-        /// </summary>
-        Rejected = 3,
-        /// <summary>
         /// در حال بسته بندی
         /// </summary>
-        Packaging = 4,
+        Packaging = 3,
         /// <summary>
         /// آماده سازی برای ارسال
         /// </summary>
-        PrePairngToSend = 5,
+        PrePairngToSend = 4,
         /// <summary>
         /// ارسال
         /// </summary>
-        Delivery = 6,
+        Delivery = 5,
         /// <summary>
         /// تحویل داده شده
         /// </summary>
-        RecievedByCustomer = 7, 
+        RecievedByCustomer = 6,
+        /// <summary>
+        /// رد شده
+        /// </summary>
+        Rejected = 7,
         /// <summary>
         /// کنسل شده
         /// </summary>

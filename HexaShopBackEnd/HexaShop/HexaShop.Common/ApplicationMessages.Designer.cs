@@ -241,6 +241,15 @@ namespace HexaShop.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سفارش تایید شد.
+        /// </summary>
+        public static string OrderConfirmed {
+            get {
+                return ResourceManager.GetString("OrderConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to سفارش ثبت شد.
         /// </summary>
         public static string OrderCreated {
@@ -255,6 +264,15 @@ namespace HexaShop.Common {
         public static string OrderIsInPackagingLevel {
             get {
                 return ResourceManager.GetString("OrderIsInPackagingLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سفارش هنوز پرداخت نشده یا در مرحله مناسبی برای تایید سفارش نیست..
+        /// </summary>
+        public static string OrderLevelIsNotProperToConfirm {
+            get {
+                return ResourceManager.GetString("OrderLevelIsNotProperToConfirm", resourceCulture);
             }
         }
         

@@ -27,35 +27,37 @@ namespace HexaShop.EndPoint.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
+        /// <summary>
+        /// create order.
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
         [HttpPost("Create")]
         public async Task<IActionResult> Order(int cartId)
         {
             try
             {
 
-                //var currentUserId = await _unitOfWork.AppUserRepository.GetCurrentUserId(User);
+                var currentUserId = await _unitOfWork.AppUserRepository.GetCurrentUserId(User);
 
                 // --- no user is signed in --- //
-                //if(currentUserId == null)
-                //{
-                //    ExceptionHelpers.ThrowException(ApplicationMessages.NoSignedInUserFound);
-                //}
+                if (currentUserId == null)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.NoSignedInUserFound);
+                }
 
                 // --- first check internet connection --- //
-                if(!CommonStaticFunctions.CheckInternetConnection())
+                if (!CommonStaticFunctions.CheckInternetConnection())
                 {
                     ExceptionHelpers.ThrowException(ApplicationMessages.ThereIsNotInternetConnection);
                 }
-
 
                 
                 // --- created order --- //
                 var createOrderResult = await _mediator.Send(new CreateOrderCR()
                 {
                     CartId = cartId,
-                    //AppUserId = (int)currentUserId
-                    AppUserId = 3
+                    AppUserId = (int)currentUserId
                 });
 
 
@@ -101,5 +103,41 @@ namespace HexaShop.EndPoint.Controllers
             }
         }
 
+        /// <summary>
+        /// confirm order.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost("{id}/Confirm")]
+        public async Task<IActionResult> Confirm(int id)
+        {
+            try
+            {
+                var includes = new List<string>()
+                {
+                    "LevelLogs"
+                };
+                var order = await _unitOfWork.OrderRepository.GetAsync(id, includes: includes);
+                if(order is null)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.OrderNotFound);
+                }
+
+                // --- validate order status --- //
+                if(order.Level != OrderProgressLevel.Paid)
+                {
+                    ExceptionHelpers.ThrowException(ApplicationMessages.OrderLevelIsNotProperToConfirm);
+                }
+
+                // --- confirm --- //
+                await _unitOfWork.OrderRepository.ChagneOrderLevel(order.Id, OrderProgressLevel.Packaging, title: ApplicationMessages.OrderConfirmed);
+
+                return Ok(order.Id);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
